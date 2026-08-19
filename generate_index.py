@@ -9,22 +9,25 @@ import re
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
+EXCLUDED = {".git", ".github"}
+
 def find_clients():
     clients = []
     for name in os.listdir(ROOT):
         path = os.path.join(ROOT, name)
-        if os.path.isdir(path) and re.fullmatch(r"client\d+", name) and os.path.exists(os.path.join(path, "index.html")):
+        if name in EXCLUDED or name.startswith("."):
+            continue
+        if os.path.isdir(path) and os.path.exists(os.path.join(path, "index.html")):
             clients.append(name)
-    clients.sort(key=lambda n: int(re.search(r"\d+", n).group()))
+    clients.sort()
     return clients
 
 def build_html(clients):
     rows = []
-    for c in clients:
-        num = re.search(r"\d+", c).group()
+    for i, c in enumerate(clients, start=1):
         rows.append(f'''      <a class="card" href="./{c}/">
-        <span class="num">{num}</span>
-        <span class="label">Démo {c}</span>
+        <span class="num">{i}</span>
+        <span class="label">{c}</span>
         <span class="arrow">&rarr;</span>
       </a>''')
     cards = "\n".join(rows)
@@ -33,7 +36,7 @@ def build_html(clients):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Diabolocom - Démos Presales</title>
+<title>Démos Presales</title>
 <style>
   :root{{--bg:#0d1117;--card:#161b22;--line:#2a313c;--txt:#f2f5f8;--muted:#9aa4af;--accent:#29abe2;}}
   *{{box-sizing:border-box}}
@@ -56,14 +59,14 @@ def build_html(clients):
 <body>
 <header>
   <h1>Démos Presales</h1>
-  <p>Espaces client de démonstration pour le chatbot Diabolocom.</p>
+  <p>Espaces client de démonstration.</p>
 </header>
 <main>
   <div class="grid">
 {cards if clients else '    <p class="empty">Aucune démo pour le moment.</p>'}
   </div>
 </main>
-<footer>&copy; Diabolocom, 2026</footer>
+<footer>Page générée automatiquement — {len(clients)} démo(s) en ligne.</footer>
 </body>
 </html>
 """
