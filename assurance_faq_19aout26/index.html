@@ -12,21 +12,22 @@
      ===================================================================== */
   :root{
     --bg:#eef2f7; --card:#163f73; --card2:#1d4c86; --line:#2c5a94;
-    --banner:#dfe6ee; --footer:#0d2c54;
+    --banner:#dfe6ee; --footer:#ffffff;
     --txt:#f2f6fa; --muted:#a9bdd4; --accent:#00b2a9;
     --tag1:#1d4c86; --tag2:#00b2a9; --tag3:#e8a33d;
     --ok:#2ea043; --pending:#d29922;
+    --footer-txt:#0d2c54; --footer-muted:#5a6672; --footer-line:#e2e6ea;
   }
   *{box-sizing:border-box}
   body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
-  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid #222;background:#000}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:#fff}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--footer-txt)}
   .logo{height:38px;max-width:150px;object-fit:contain}
   nav{display:flex;flex-wrap:wrap;justify-content:center}
-  nav a{color:#cdd4db;text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
-  nav a:hover{color:#fff}
-  nav a.active{font-weight:700;color:#fff;border-bottom:2px solid var(--accent)}
-  .user{display:flex;align-items:center;gap:10px;color:#fff}
+  nav a{color:var(--footer-muted);text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
+  nav a:hover{color:var(--footer-txt)}
+  nav a.active{font-weight:700;color:var(--footer-txt);border-bottom:2px solid var(--accent)}
+  .user{display:flex;align-items:center;gap:10px;color:var(--footer-txt)}
   .avatar{width:34px;height:34px;border-radius:50%;background:#eef1f5;color:#1a1f26;border:1px solid #dce1e7;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
   main{max-width:1040px;margin:0 auto;padding:28px 24px}
   h1{font-size:26px;margin:0 0 4px}
@@ -89,15 +90,15 @@
   .help-tile span{font-size:12px;font-weight:600}
 
   /* ---- Bandeau langue pleine largeur, collé au footer ---- */
-  .locale-bar{background:var(--card);border-top:1px solid var(--line);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:40px}
+  .locale-bar{background:var(--card);border-top:1px solid var(--line);padding:16px 24px;display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:40px}
   .locale-bar img{height:34px;max-width:130px;object-fit:contain}
   .locale-bar select{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer}
 
-  footer.site{background:var(--footer);color:#fff}
+  footer.site{background:var(--footer);color:var(--footer-txt)}
   footer.site .inner{max-width:1040px;margin:0 auto;padding:30px 24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
-  footer.site a{color:#cdd4db;text-decoration:none;font-size:13px}
-  footer.site a:hover{color:#fff}
-  footer.site .copy{color:#8a939d;font-size:13px;margin-left:auto}
+  footer.site a{color:var(--footer-muted);text-decoration:none;font-size:13px}
+  footer.site a:hover{color:var(--footer-txt)}
+  footer.site .copy{color:var(--footer-muted);font-size:13px;margin-left:auto}
   @media(max-width:600px){footer.site .copy{margin-left:0;width:100%}}
   @media(max-width:520px){
     header{padding:12px 16px}
@@ -110,7 +111,7 @@
 <body>
 <!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
 <header>
-  <div class="brand"><img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/thumb/5/52/Logo_MATMUT_2022.svg/1280px-Logo_MATMUT_2022.svg.png" alt="logo"> Matmut</div>
+  <div class="brand"><img class="logo" src="https://upload.wikimedia.org/wikipedia/fr/thumb/5/52/Logo_MATMUT_2022.svg/1280px-Logo_MATMUT_2022.svg.png" alt="logo"></div>
   <nav>
     <a href="#">Mes contrats</a><a href="#">Sinistres</a><a href="#" class="active">FAQ</a><a href="#">Aide</a>
   </nav>
@@ -203,7 +204,6 @@
 
 <!-- ============ BANDEAU 9/10 : FOOTER 1 (logo client + pays / langue) ============ -->
 <div class="locale-bar">
-  <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/5/52/Logo_MATMUT_2022.svg/1280px-Logo_MATMUT_2022.svg.png" alt="logo">
   <select aria-label="Langue">
     <option selected>France</option>
   </select>
