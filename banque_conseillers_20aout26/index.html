@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BRED Banque Populaire - Mon espace</title>
+<style>
+  /* =====================================================================
+     THEME — seules ces variables changent d'un client a l'autre.
+     --accent : couleur principale du client (liens, hover, mots en bleu)
+     --tag1/2/3 : pastilles de categorie dans le bandeau BLOCS N°1
+     ===================================================================== */
+  :root{
+    --bg:#f5f5f7; --card:#ffffff; --card2:#eef1f5; --line:#e2e6ea;
+    --banner:#e8edf5; --footer:#ffffff;
+    --txt:#1a1f26; --muted:#6b7280; --accent:#3e6bac;
+    --tag1:#1c3f73; --tag2:#ff6a00; --tag3:#6b7d99;
+    --ok:#2ea043; --pending:#d29922;
+    --footer-txt:#10306b; --footer-muted:#5a6672; --footer-line:#e2e6ea;
+    --locale-bg:#e8edf5;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--footer-txt)}
+  .logo{height:38px;max-width:150px;object-fit:contain}
+  nav{display:flex;flex-wrap:wrap;justify-content:center}
+  nav a{color:var(--footer-muted);text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
+  nav a:hover{color:var(--footer-txt)}
+  nav a.active{font-weight:700;color:var(--footer-txt);border-bottom:2px solid var(--accent)}
+  .user{display:flex;align-items:center;gap:10px;color:var(--footer-txt)}
+  .avatar{width:34px;height:34px;border-radius:50%;background:#eef1f5;color:#1a1f26;border:1px solid #dce1e7;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  main{max-width:1040px;margin:0 auto;padding:28px 24px}
+  h1{font-size:26px;margin:0 0 4px}
+  h1 .name{color:var(--accent)}
+  .sub{color:#5a6672;margin:0 0 20px;font-size:14px}
+  .toggle{background:none;border:1px solid #cfd6dd;color:#5a6672;padding:6px 12px;border-radius:8px;font-size:13px;cursor:pointer}
+  .grid{display:grid;grid-template-columns:1.75fr 1fr;gap:20px;margin:35px 0 0.5cm;align-items:stretch}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .col-left{display:flex;flex-direction:column;gap:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;color:var(--txt)}
+  .card h2{font-size:16px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .card h2 a{font-size:13px;color:var(--accent);text-decoration:none}
+  .row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .tag{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;flex:none}
+  .tag.t1{background:var(--tag1)} .tag.t2{background:var(--tag2)} .tag.t3{background:var(--tag3)}
+  .row .info{flex:1;min-width:0}
+  .row .info b{display:block;font-size:14px}
+  .row .info span{font-size:12px;color:var(--muted)}
+  .status{font-size:12px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex:none}
+  .status.ok{background:rgba(46,160,67,.15);color:#1e7a34}
+  .status.pending{background:rgba(210,153,34,.15);color:#946213}
+  .amount{font-weight:700;font-size:15px;min-width:60px;text-align:right;flex:none}
+
+  .demo-note{text-align:left;color:#5a6672;font-size:14px;font-style:italic;margin:0 0 18px;white-space:nowrap;line-height:1.6}
+  .section-title{font-size:26px;font-weight:700;margin:0 0 14px;text-align:left;color:#1a1f26}
+  .section-title.spaced{margin-top:1.5cm}
+  .section-title .name{color:var(--accent)}
+  .demo-img{display:block;max-width:100%;width:640px;margin:0 auto 0.5cm;border-radius:12px}
+
+  .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
+  @media(max-width:600px){.nav-grid{grid-template-columns:repeat(2,1fr)}}
+  .nav-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s}
+  .nav-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
+  .nav-tile .icon{width:34px;height:34px;display:inline-block;background-color:var(--accent);-webkit-mask-image:var(--icon-url);mask-image:var(--icon-url);-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center}
+  .nav-tile:hover .icon{background-color:#fff}
+  .nav-tile span{display:block;margin-top:8px;font-size:11px;font-weight:600}
+  .promo{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--txt);display:flex;flex-direction:column;height:100%}
+  .promo h3{margin:0 0 6px;font-size:15px}
+  .promo p{margin:0 0 14px;color:var(--muted);font-size:13px}
+  .promo img{width:100%;border-radius:10px;display:block;flex:1;min-height:0;object-fit:cover}
+  .progress{height:8px;background:var(--card2);border-radius:20px;overflow:hidden;margin:12px 0 6px}
+  .progress i{display:block;height:100%;width:79%;background:var(--accent)}
+  .achieve b{font-size:22px}
+  .achieve span{color:var(--muted);font-size:13px}
+
+  /* ---- Bandeau assistance pleine largeur ---- */
+  .support-banner{background:var(--banner);border-top:1px solid #cfd6dd;border-bottom:1px solid #cfd6dd;padding:32px 24px;margin:40px 0;
+    width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw}
+  .support-banner p{max-width:900px;margin:0 auto;color:#1a1f26;line-height:2;font-size:14px;text-align:center}
+  .support-banner strong{color:#000}
+
+  /* ---- Rubriques d'assistance ---- */
+  .help-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:16px 0}
+  .help-grid-3{grid-template-columns:repeat(3,1fr);margin-bottom:40px}
+  @media(max-width:760px){.help-grid,.help-grid-3{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:420px){.help-grid,.help-grid-3{grid-template-columns:1fr}}
+  .help-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:21px 14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s;display:flex;flex-direction:column;align-items:center;gap:11px}
+  .help-tile:hover{transform:translateY(-2px);background:var(--accent);color:#fff}
+  .help-tile .icon{width:42px;height:42px;display:inline-block;background-color:var(--accent);-webkit-mask-image:var(--icon-url);mask-image:var(--icon-url);-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center}
+  .help-tile:hover .icon{background-color:#fff}
+  .help-tile span{font-size:12px;font-weight:600}
+
+  /* ---- Bandeau langue pleine largeur, collé au footer ---- */
+  .locale-bar{background:var(--locale-bg);border-top:1px solid var(--line);padding:16px 24px;display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:40px}
+  .locale-bar img{height:34px;max-width:130px;object-fit:contain}
+  .locale-bar select{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer}
+
+  footer.site{background:var(--footer);color:var(--footer-txt)}
+  footer.site .inner{max-width:1040px;margin:0 auto;padding:30px 24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+  footer.site a{color:var(--footer-muted);text-decoration:none;font-size:13px}
+  footer.site a:hover{color:var(--footer-txt)}
+  footer.site .copy{color:var(--footer-muted);font-size:13px;margin-left:auto}
+  @media(max-width:600px){footer.site .copy{margin-left:0;width:100%}}
+  @media(max-width:520px){
+    header{padding:12px 16px}
+    main{padding:20px 16px}
+    h1{font-size:22px}
+    .user span:last-child{display:none}
+  }
+</style>
+</head>
+<body>
+<!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
+<header>
+  <div class="brand"><img class="logo" src="https://www.oklein.fr/wp-content/uploads/2020/02/BRED_BANQUE_POPULAIRE_LOGO_2LG_RVB.png" alt="logo"></div>
+  <nav>
+    <a href="#" class="active">Portefeuille clients</a><a href="#">Agenda</a><a href="#">Simulateurs</a><a href="#">Ressources</a><a href="#">Aide</a>
+  </nav>
+  <div class="user"><span class="avatar">LD</span><span>Louis Dubois</span></div>
+</header>
+
+<main>
+  <!-- ============ BANDEAU 2/10 : ALERTE DEMO DIABOLOCOM — NE JAMAIS SUPPRIMER ============ -->
+  <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p>
+  <!-- ============ BANDEAU 3/10 : SALUTATION (titre + sous-titre + bouton) ============ -->
+  <h1>Bonjour <span class="name">Louis</span></h1>
+  <p class="sub">Voici un aperçu de votre activité au 20 août 2026.</p>
+  <button class="toggle" onclick="document.querySelectorAll('.amount').forEach(e=>e.style.visibility=e.style.visibility==='hidden'?'visible':'hidden')">Masquer les montants</button>
+
+  <!-- ============ BANDEAU 4/10 : BLOCS N°1 (3 blocs : liste principale, encart promo, compteur) ============ -->
+  <div class="grid">
+    <div class="col-left">
+    <div class="card">
+      <h2>Dossiers clients en cours <a href="#">Tout voir &rarr;</a></h2>
+      <div class="row">
+        <div class="tag t1">IM</div>
+        <div class="info"><b>Prêt immobilier — Dossier Martin</b><span>Particuliers</span></div>
+        <span class="status ok">Validé</span>
+        <div class="amount">185 000 &euro;</div>
+      </div>
+      <div class="row">
+        <div class="tag t2">EP</div>
+        <div class="info"><b>Assurance-vie — Dossier Petit</b><span>Épargne</span></div>
+        <span class="status pending">En attente de signature</span>
+        <div class="amount">42 000 &euro;</div>
+      </div>
+      <div class="row">
+        <div class="tag t3">PRO</div>
+        <div class="info"><b>Prêt professionnel — Dossier Lefèvre SARL</b><span>Professionnels</span></div>
+        <span class="status ok">Validé</span>
+        <div class="amount">95 000 &euro;</div>
+      </div>
+      <div class="row">
+        <div class="tag t1">CR</div>
+        <div class="info"><b>Crédit consommation — Dossier Roche</b><span>Particuliers</span></div>
+        <span class="status pending">En attente de signature</span>
+        <div class="amount">12 500 &euro;</div>
+      </div>
+      <div class="row">
+        <div class="tag t2">EP</div>
+        <div class="info"><b>Plan épargne retraite — Dossier Girard</b><span>Épargne</span></div>
+        <span class="status ok">Validé</span>
+        <div class="amount">28 000 &euro;</div>
+      </div>
+    </div>
+    </div>
+
+    <div class="promo">
+      <h3>Trouver votre agence</h3>
+      <p>Orientez vos clients vers l'agence BRED la plus proche pour un rendez-vous en personne.</p>
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWnCoZFc8xEkqoPS3-7_s1mSBQb5aohCGWViv5NDfMxR6rM50KGrKdQRBW&s=10" alt="Agence BRED">
+    </div>
+  </div>
+
+  <!-- ============ BANDEAU 5/10 : IMAGE (titre + visuel pleine largeur) ============ -->
+  <h2 class="section-title spaced">Retrouvez nos dernières <span class="name">actualités</span></h2>
+  <img class="demo-img" src="https://cdn-images.welcometothejungle.com/z5U1Z0WMODMh5bO2q7D4axy2a6vZA-PCwiYpJOyNtrE/rs:auto:2000:450:/g:fp:0:0.48/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLTAyMzEwN2VmLWQxODMtNDNiMS1hMWQ4LTdmYTNhMzQxOWE5Yi5qcGc" alt="Illustration démonstration">
+
+  <!-- ============ BANDEAU 6/10 : BLOCS N°2 (titre + 4 tuiles de services) ============ -->
+  <h2 class="section-title spaced">Nos <span class="name">services</span></h2>
+  <div class="nav-grid">
+    <a class="nav-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/256/17/17004.png')"></span><span>Portefeuille clients</span></a>
+    <a class="nav-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/256/26/26589.png')"></span><span>Simulateurs</span></a>
+    <a class="nav-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/512/117/117641.png')"></span><span>Mes dépenses</span></a>
+    <a class="nav-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/512/10042/10042848.png')"></span><span>FAQ conseillers</span></a>
+  </div>
+
+  <!-- Bandeau d'assistance pleine largeur, texte centré -->
+  <!-- ============ BANDEAU 7/10 : TEXTE DESCRIPTIF (paragraphe gris pleine largeur) ============ -->
+  <div class="support-banner">
+    <p>Un problème avec l'un de vos outils métier, un blocage sur un dossier client ou une question sur une procédure interne ? Notre équipe support met tout en œuvre pour vous permettre de reprendre votre activité rapidement. Avant de soumettre une demande, pensez à consulter notre <strong>Foire aux questions</strong> ci-dessous. La plupart des incidents courants et des modes opératoires y sont déjà détaillés. Le problème persiste ? Cliquez sur le bouton «&nbsp;Soumettre un ticket&nbsp;». Merci de préciser votre agence, votre poste de travail et l'application concernée. N'hésitez pas à joindre des captures d'écran pour accélérer le traitement de votre demande. Nos équipes traitent vos demandes du lundi au vendredi, généralement sous 24 à 48 heures. Pour connaître l'état en direct des applicatifs internes, consultez notre page de statut sur l'intranet.</p>
+  </div>
+
+  <!-- ============ BANDEAU 8/10 : BLOCS N°3 (titre + 4 + 3 tuiles d'assistance) ============ -->
+  <h2 class="section-title">Si vous avez besoin d'<span class="name">aide</span></h2>
+  <!-- Rubriques : rangée de 4 -->
+  <div class="help-grid">
+    <a class="help-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/512/686/686589.png')"></span><span>Outils et applicatifs</span></a>
+    <a class="help-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/512/3092/3092920.png')"></span><span>Habilitations et accès</span></a>
+    <a class="help-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/512/4659/4659011.png')"></span><span>Conformité et réglementation</span></a>
+    <a class="help-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/512/75/75668.png')"></span><span>Support technique</span></a>
+  </div>
+  <!-- Rubriques : rangée de 3 élargie -->
+  <div class="help-grid help-grid-3">
+    <a class="help-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/512/348/348488.png')"></span><span>Procédures internes</span></a>
+    <a class="help-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/512/1034/1034153.png')"></span><span>Nous contacter</span></a>
+    <a class="help-tile" href="#"><span class="icon" style="--icon-url:url('https://cdn-icons-png.flaticon.com/512/545/545676.png')"></span><span>Autres ressources</span></a>
+  </div>
+</main>
+
+<!-- ============ BANDEAU 9/10 : FOOTER 1 (logo client + pays / langue) ============ -->
+<div class="locale-bar">
+  <select aria-label="Langue">
+    <option selected>France</option>
+  </select>
+</div>
+
+<!-- ============ BANDEAU 10/10 : FOOTER 2 (menu legal + copyright Diabolocom) ============ -->
+<footer class="site">
+  <div class="inner">
+    <a href="#">Habilitations et accès</a>
+    <a href="#">Assistance</a>
+    <a href="#">Informations sur la compagnie</a>
+    <a href="#">Politique de confidentialité du site web</a>
+    <a href="#">Mentions légales</a>
+    <a href="#">Contact</a>
+    <span class="copy">&copy; Diabolocom, 2026</span>
+  </div>
+</footer>
+<!-- ============ SNIPPET CHATBOT — coller ici le script de demo, ne rien mettre apres ============ -->
+<script src="https://fr2.chat.diabolocom.com/01a01f02-5c9f-71f6-a98e-2d7bdc92db15/config.js"></script>
+</body>
+</html>
