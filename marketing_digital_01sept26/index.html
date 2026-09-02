@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solocal - Mon espace client</title>
+<style>
+  /* =====================================================================
+     THEME — seules ces variables changent d'un client a l'autre.
+     --accent : couleur principale du client (liens, hover, mots en bleu)
+     --tag1/2/3 : pastilles de categorie dans le bandeau BLOCS N°1
+     ===================================================================== */
+  :root{
+    --bg:#f0f0f5; --card:#ffffff; --card2:#e9ebf1; --line:#e2e6ea;
+    --banner:#e4e6ee; --footer:#0a68f1;
+    --txt:#1a1f26; --muted:#5a6672; --accent:#ffde07; --accent-txt:#0a68f1;
+    --tag1:#0a68f1; --tag2:#00a9a5; --tag3:#f5a623;
+    --ok:#2ea043; --pending:#b06f00;
+    --footer-txt:#ffffff; --footer-muted:#cfe0fb; --footer-line:#0a58cc;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--footer-txt)}
+  .logo{height:38px;max-width:150px;object-fit:contain;background:#fff;padding:6px 10px;border-radius:8px}
+  nav{display:flex;flex-wrap:wrap;justify-content:center}
+  nav a{color:var(--footer-muted);text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
+  nav a:hover{color:var(--footer-txt)}
+  nav a.active{font-weight:700;color:var(--footer-txt);border-bottom:2px solid var(--accent)}
+  .user{display:flex;align-items:center;gap:10px;color:var(--footer-txt)}
+  .avatar{width:34px;height:34px;border-radius:50%;background:#eef1f5;color:#1a1f26;border:1px solid #dce1e7;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  main{max-width:1040px;margin:0 auto;padding:28px 24px}
+  h1{font-size:26px;margin:0 0 4px}
+  h1 .name{color:var(--accent-txt)}
+  .sub{color:#5a6672;margin:0 0 20px;font-size:14px}
+  .toggle{background:none;border:1px solid #cfd6dd;color:#5a6672;padding:6px 12px;border-radius:8px;font-size:13px;cursor:pointer}
+  .grid{display:grid;grid-template-columns:1.75fr 1fr;gap:20px;margin:35px 0 0.5cm;align-items:stretch}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .col-left{display:flex;flex-direction:column;gap:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;color:var(--txt)}
+  .card h2{font-size:16px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .card h2 a{font-size:13px;color:var(--accent-txt);text-decoration:none}
+  .row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .tag{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;flex:none}
+  .tag.t1{background:var(--tag1)} .tag.t2{background:var(--tag2)} .tag.t3{background:var(--tag3)}
+  .row .info{flex:1;min-width:0}
+  .row .info b{display:block;font-size:14px}
+  .row .info span{font-size:12px;color:var(--muted)}
+  .status{font-size:12px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex:none}
+  .status.ok{background:rgba(46,160,67,.14);color:var(--ok)}
+  .status.pending{background:rgba(245,166,35,.18);color:var(--pending)}
+  .amount{font-weight:700;font-size:15px;min-width:60px;text-align:right;flex:none}
+
+  .demo-note{text-align:left;color:#5a6672;font-size:14px;font-style:italic;margin:0 0 18px;white-space:nowrap;line-height:1.6}
+  .section-title{font-size:26px;font-weight:700;margin:0 0 14px;text-align:left;color:#1a1f26}
+  .section-title.spaced{margin-top:1.5cm}
+  .section-title .name{color:var(--accent-txt)}
+  .demo-img{display:block;max-width:100%;width:640px;margin:0 auto 0.5cm;border-radius:12px}
+
+  .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
+  @media(max-width:600px){.nav-grid{grid-template-columns:repeat(2,1fr)}}
+  .nav-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s}
+  .nav-tile:hover{transform:translateY(-2px);background:var(--accent);color:var(--txt)}
+  .nav-tile .ico{width:34px;height:34px;display:block;margin:0 auto;background-color:var(--accent-txt);-webkit-mask:var(--u) center/contain no-repeat;mask:var(--u) center/contain no-repeat}
+  .nav-tile span{display:block;margin-top:8px;font-size:11px;font-weight:600}
+  .promo{background:linear-gradient(135deg,#ffffff,#eef1f7);border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--txt);display:flex;flex-direction:column;height:100%}
+  .promo h3{margin:0 0 6px;font-size:15px}
+  .promo p{margin:0 0 14px;color:var(--muted);font-size:13px}
+  .promo img{width:100%;border-radius:10px;display:block;flex:1;min-height:0;object-fit:cover}
+  .progress{height:8px;background:var(--card2);border-radius:20px;overflow:hidden;margin:12px 0 6px}
+  .progress i{display:block;height:100%;width:55%;background:var(--accent)}
+  .achieve b{font-size:22px}
+  .achieve span{color:var(--muted);font-size:13px}
+
+  /* ---- Bandeau assistance pleine largeur ---- */
+  .support-banner{background:var(--banner);border-top:1px solid #d2d5df;border-bottom:1px solid #d2d5df;padding:32px 24px;margin:40px 0;
+    width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw}
+  .support-banner p{max-width:900px;margin:0 auto;color:#1a1f26;line-height:2;font-size:14px;text-align:center}
+  .support-banner strong{color:#000}
+
+  /* ---- Rubriques d'assistance ---- */
+  .help-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:16px 0}
+  .help-grid-3{grid-template-columns:repeat(3,1fr);margin-bottom:40px}
+  @media(max-width:760px){.help-grid,.help-grid-3{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:420px){.help-grid,.help-grid-3{grid-template-columns:1fr}}
+  .help-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:21px 14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s;display:flex;flex-direction:column;align-items:center;gap:11px}
+  .help-tile:hover{transform:translateY(-2px);background:var(--accent);color:var(--txt)}
+  .help-tile .ico{width:42px;height:42px;display:block;background-color:var(--accent-txt);-webkit-mask:var(--u) center/contain no-repeat;mask:var(--u) center/contain no-repeat}
+  .help-tile span{font-size:12px;font-weight:600}
+
+  /* ---- Bandeau langue pleine largeur, collé au footer ---- */
+  .locale-bar{background:var(--card);border-top:1px solid var(--line);padding:16px 24px;display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:40px}
+  .locale-bar img{height:34px;max-width:130px;object-fit:contain}
+  .locale-bar select{background:var(--bg);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer}
+
+  footer.site{background:var(--footer);color:var(--footer-txt)}
+  footer.site .inner{max-width:1040px;margin:0 auto;padding:30px 24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+  footer.site a{color:var(--footer-muted);text-decoration:none;font-size:13px}
+  footer.site a:hover{color:var(--footer-txt)}
+  footer.site .copy{color:var(--footer-muted);font-size:13px;margin-left:auto}
+  @media(max-width:600px){footer.site .copy{margin-left:0;width:100%}}
+  @media(max-width:520px){
+    header{padding:12px 16px}
+    main{padding:20px 16px}
+    h1{font-size:22px}
+    .user span:last-child{display:none}
+  }
+</style>
+</head>
+<body>
+<!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
+<header>
+  <div class="brand"><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/0/05/Logo_Solocal-2018.jpg" alt="logo"></div>
+  <nav>
+    <a href="#" class="active">Factures</a><a href="#">Paiements</a><a href="#">Mes prestations</a><a href="#">Performances</a><a href="#">Aide</a>
+  </nav>
+  <div class="user"><span class="avatar">LD</span><span>Louis Dubois</span></div>
+</header>
+
+<main>
+  <!-- ============ BANDEAU 2/10 : ALERTE DEMO DIABOLOCOM — NE JAMAIS SUPPRIMER ============ -->
+  <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p>
+  <!-- ============ BANDEAU 3/10 : SALUTATION (titre + sous-titre + bouton) ============ -->
+  <h1>Bonjour <span class="name">Louis</span></h1>
+  <p class="sub">Voici un aperçu de vos factures et de vos paiements au 1er septembre 2026.</p>
+  <button class="toggle" onclick="document.querySelectorAll('.amount').forEach(e=>e.style.visibility=e.style.visibility==='hidden'?'visible':'hidden')">Masquer les montants</button>
+
+  <!-- ============ BANDEAU 4/10 : BLOCS N°1 (3 blocs : liste principale, encart promo, compteur) ============ -->
+  <div class="grid">
+    <div class="col-left">
+    <div class="card">
+      <h2>Vos dernières factures <a href="#">Tout voir &rarr;</a></h2>
+      <div class="row">
+        <div class="tag t1">SW</div>
+        <div class="info"><b>Facture n° 2026-08-4417</b><span>Site internet &amp; hébergement</span></div>
+        <span class="status ok">Payée</span>
+        <div class="amount">149 &euro;</div>
+      </div>
+      <div class="row">
+        <div class="tag t2">VL</div>
+        <div class="info"><b>Facture n° 2026-08-4418</b><span>Visibilité locale &amp; fiche établissement</span></div>
+        <span class="status pending">Prélèvement en cours</span>
+        <div class="amount">89 &euro;</div>
+      </div>
+      <div class="row">
+        <div class="tag t3">CA</div>
+        <div class="info"><b>Facture n° 2026-07-3902</b><span>Campagne publicitaire &amp; référencement</span></div>
+        <span class="status ok">Payée</span>
+        <div class="amount">320 &euro;</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Budget annuel de vos prestations</h2>
+      <div class="achieve"><b>1 650 &euro;</b> <span>/ 3 000 &euro; engagés</span></div>
+      <div class="progress"><i></i></div>
+      <span style="font-size:13px;color:var(--muted)">55 % du budget déjà facturé</span>
+    </div>
+    </div>
+
+    <div class="promo">
+      <h3>Développez votre visibilité</h3>
+      <p>Découvrez les offres qui font venir plus de clients dans votre commerce.</p>
+      <img src="https://cdn-images.welcometothejungle.com/9j2F20f_RZAXODW10Bnk_vi3UBsqEWs2BdW8zWnBGQc/rs:auto:2000::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9hcnRpY2xlL2ltYWdlLzk0MTEvMTY1NDg0L1NPTE9DQUwtU0FOUy1MT0dPLTIwMDAtNTYuanBn" alt="Nos offres">
+    </div>
+  </div>
+
+  <!-- ============ BANDEAU 5/10 : IMAGE (titre + visuel pleine largeur) ============ -->
+  <h2 class="section-title spaced">Retrouvez nos dernières <span class="name">actualités</span></h2>
+  <img class="demo-img" src="https://img.lemde.fr/2020/06/12/47/0/676/338/1440/720/60/0/e5e7045_ML3HSjB_gEVvkr1c-9sLqcFE.png" alt="Illustration démonstration">
+
+  <!-- ============ BANDEAU 6/10 : BLOCS N°2 (titre + 4 tuiles de services) ============ -->
+  <h2 class="section-title spaced">Vos <span class="name">services</span></h2>
+  <div class="nav-grid">
+    <a class="nav-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/117/117641.png')"></i><span>Mes factures</span></a>
+    <a class="nav-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/256/17/17004.png')"></i><span>Mon compte</span></a>
+    <a class="nav-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/256/26/26589.png')"></i><span>Mes prestations</span></a>
+    <a class="nav-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/10042/10042848.png')"></i><span>FAQ</span></a>
+  </div>
+
+  <!-- Bandeau d'assistance pleine largeur, texte centré -->
+  <!-- ============ BANDEAU 7/10 : TEXTE DESCRIPTIF (paragraphe gris pleine largeur) ============ -->
+  <div class="support-banner">
+    <p>Une question sur une facture, une échéance ou un prélèvement ? Votre espace client regroupe l'ensemble de vos documents de facturation, prestation par prestation. Vos factures sont émises chaque mois et restent téléchargeables au format PDF pendant toute la durée de votre contrat. Avant de nous contacter, pensez à consulter la rubrique <strong>Facturation et paiement</strong> ci-dessous : les questions les plus fréquentes y sont déjà traitées, du changement de coordonnées bancaires à la mise à jour de votre mandat de prélèvement. Votre demande porte sur un montant, une échéance décalée ou un moyen de paiement à modifier ? Utilisez le bouton «&nbsp;Nous contacter&nbsp;» en précisant votre numéro de client et la référence de la facture concernée. Nos conseillers vous répondent du lundi au vendredi, généralement sous 48 heures ouvrées. Pour suivre l'avancement d'une demande déjà déposée, rendez-vous dans la rubrique «&nbsp;Suivi de mes demandes&nbsp;».</p>
+  </div>
+
+  <!-- ============ BANDEAU 8/10 : BLOCS N°3 (titre + 4 + 3 tuiles d'assistance) ============ -->
+  <h2 class="section-title">Si vous avez besoin d'<span class="name">aide</span></h2>
+  <!-- Rubriques : rangée de 4 -->
+  <div class="help-grid">
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/4659/4659011.png')"></i><span>Facturation et paiement</span></a>
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/686/686589.png')"></i><span>Mes prestations</span></a>
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/3092/3092920.png')"></i><span>Coordonnées bancaires</span></a>
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/75/75668.png')"></i><span>Contrat et résiliation</span></a>
+  </div>
+  <!-- Rubriques : rangée de 3 élargie -->
+  <div class="help-grid help-grid-3">
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/545/545676.png')"></i><span>Suivi de mes demandes</span></a>
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/1034/1034153.png')"></i><span>Nous contacter</span></a>
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/348/348488.png')"></i><span>Autres rubriques d'assistance</span></a>
+  </div>
+</main>
+
+<!-- ============ BANDEAU 9/10 : FOOTER 1 (logo client + pays / langue) ============ -->
+<div class="locale-bar">
+  <select aria-label="Langue">
+    <option selected>France</option>
+  </select>
+</div>
+
+<!-- ============ BANDEAU 10/10 : FOOTER 2 (menu legal + copyright Diabolocom) ============ -->
+<footer class="site">
+  <div class="inner">
+    <a href="#">Qui sommes-nous</a>
+    <a href="#">Nos offres</a>
+    <a href="#">Assistance</a>
+    <a href="#">Politique de confidentialité</a>
+    <a href="#">Mentions légales</a>
+    <a href="#">Contact</a>
+    <span class="copy">&copy; Diabolocom, 2026</span>
+  </div>
+</footer>
+<!-- ============ SNIPPET CHATBOT — coller ici le script de demo, ne rien mettre apres ============ -->
+<script src="https://fr2.chat.diabolocom.com/01a05cbf-fa04-744b-8816-729b565b535f/config.js"></script>
+</body>
+</html>
