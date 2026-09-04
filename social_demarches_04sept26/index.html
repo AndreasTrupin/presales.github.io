@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IGESA - Mon espace</title>
+<style>
+  /* =====================================================================
+     THEME — seules ces variables changent d'un client a l'autre.
+     --accent : couleur principale du client (liens, hover, mots en bleu)
+     --tag1/2/3 : pastilles de categorie dans le bandeau BLOCS N°1
+     ===================================================================== */
+  :root{
+    --bg:#f6f8fb; --card:#04366e; --card2:#0d4a86; --line:#1c5796;
+    --banner:#eef2f6; --footer:#ffffff;
+    --txt:#eef5fc; --muted:#9fbedd; --accent:#66b5f5;
+    --tag1:#1c6dd0; --tag2:#d9822b; --tag3:#1e9e82;
+    --ok:#2ea043; --pending:#d29922;
+    --footer-txt:#04366e; --footer-muted:#5a6672; --footer-line:#e2e6ea;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--footer-txt)}
+  .logo{height:38px;max-width:150px;object-fit:contain}
+  nav{display:flex;flex-wrap:wrap;justify-content:center}
+  nav a{color:var(--footer-muted);text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
+  nav a:hover{color:var(--footer-txt)}
+  nav a.active{font-weight:700;color:var(--footer-txt);border-bottom:2px solid var(--accent)}
+  .user{display:flex;align-items:center;gap:10px;color:var(--footer-txt)}
+  .avatar{width:34px;height:34px;border-radius:50%;background:#eef1f5;color:#1a1f26;border:1px solid #dce1e7;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+  main{max-width:1040px;margin:0 auto;padding:28px 24px}
+  h1{font-size:26px;margin:0 0 4px}
+  h1 .name{color:var(--accent)}
+  .sub{color:#5a6672;margin:0 0 20px;font-size:14px}
+  .toggle{background:none;border:1px solid #cfd6dd;color:#5a6672;padding:6px 12px;border-radius:8px;font-size:13px;cursor:pointer}
+  .grid{display:grid;grid-template-columns:1.75fr 1fr;gap:20px;margin:35px 0 0.5cm;align-items:stretch}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .col-left{display:flex;flex-direction:column;gap:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;color:var(--txt)}
+  .card h2{font-size:16px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .card h2 a{font-size:13px;color:var(--accent);text-decoration:none}
+  .row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .tag{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;flex:none}
+  .tag.t1{background:var(--tag1)} .tag.t2{background:var(--tag2)} .tag.t3{background:var(--tag3)}
+  .row .info{flex:1;min-width:0}
+  .row .info b{display:block;font-size:14px}
+  .row .info span{font-size:12px;color:var(--muted)}
+  .status{font-size:12px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex:none}
+  .status.ok{background:rgba(46,160,67,.25);color:#7be0a0}
+  .status.pending{background:rgba(210,153,34,.25);color:#f0c360}
+  .amount{font-weight:700;font-size:15px;min-width:60px;text-align:right;flex:none}
+
+  .demo-note{text-align:left;color:#5a6672;font-size:14px;font-style:italic;margin:0 0 18px;white-space:nowrap;line-height:1.6}
+  .section-title{font-size:26px;font-weight:700;margin:0 0 14px;text-align:left;color:#1a1f26}
+  .section-title.spaced{margin-top:1.5cm}
+  .section-title .name{color:var(--accent)}
+  .demo-img{display:block;max-width:100%;width:640px;margin:0 auto 0.5cm;border-radius:12px}
+
+  .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 32px}
+  @media(max-width:600px){.nav-grid{grid-template-columns:repeat(2,1fr)}}
+  .nav-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s}
+  .nav-tile:hover{transform:translateY(-2px);background:#ffffff;color:var(--footer-txt)}
+  .nav-tile span{display:block;margin-top:8px;font-size:11px;font-weight:600}
+  .ico{display:inline-block;width:34px;height:34px;background-color:#ffffff;-webkit-mask-image:var(--u);mask-image:var(--u);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;transition:background-color .1s}
+  .nav-tile:hover .ico,.help-tile:hover .ico{background-color:var(--footer-txt)}
+  .promo{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--txt);display:flex;flex-direction:column;height:100%}
+  .promo h3{margin:0 0 6px;font-size:15px}
+  .promo p{margin:0 0 14px;color:var(--muted);font-size:13px}
+  .promo img{width:100%;border-radius:10px;display:block;flex:1;min-height:0;object-fit:cover}
+  .progress{height:8px;background:var(--card2);border-radius:20px;overflow:hidden;margin:12px 0 6px}
+  .progress i{display:block;height:100%;width:55%;background:var(--accent)}
+  .achieve b{font-size:22px}
+  .achieve span{color:var(--muted);font-size:13px}
+
+  /* ---- Bandeau assistance pleine largeur ---- */
+  .support-banner{background:var(--banner);border-top:1px solid #cfd6dd;border-bottom:1px solid #cfd6dd;padding:32px 24px;margin:40px 0;
+    width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw}
+  .support-banner p{max-width:900px;margin:0 auto;color:#1a1f26;line-height:2;font-size:14px;text-align:center}
+  .support-banner strong{color:#000}
+
+  /* ---- Rubriques d'assistance ---- */
+  .help-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:16px 0}
+  .help-grid-3{grid-template-columns:repeat(3,1fr);margin-bottom:40px}
+  @media(max-width:760px){.help-grid,.help-grid-3{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:420px){.help-grid,.help-grid-3{grid-template-columns:1fr}}
+  .help-tile{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:21px 14px;text-align:center;color:var(--txt);text-decoration:none;transition:transform .1s,background .1s;display:flex;flex-direction:column;align-items:center;gap:11px}
+  .help-tile:hover{transform:translateY(-2px);background:#ffffff;color:var(--footer-txt)}
+  .help-tile .ico{width:42px;height:42px}
+  .help-tile span{font-size:12px;font-weight:600}
+
+  /* ---- Bandeau langue pleine largeur, collé au footer ---- */
+  .locale-bar{background:var(--card);border-top:1px solid var(--line);padding:16px 24px;display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:40px}
+  .locale-bar img{height:34px;max-width:130px;object-fit:contain}
+  .locale-bar select{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer}
+
+  footer.site{background:var(--footer);color:var(--footer-txt)}
+  footer.site .inner{max-width:1040px;margin:0 auto;padding:30px 24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+  footer.site a{color:var(--footer-muted);text-decoration:none;font-size:13px}
+  footer.site a:hover{color:var(--footer-txt)}
+  footer.site .copy{color:var(--footer-muted);font-size:13px;margin-left:auto}
+  @media(max-width:600px){footer.site .copy{margin-left:0;width:100%}}
+  @media(max-width:520px){
+    header{padding:12px 16px}
+    main{padding:20px 16px}
+    h1{font-size:22px}
+    .user span:last-child{display:none}
+  }
+</style>
+</head>
+<body>
+<!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
+<header>
+  <div class="brand"><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo-IGESA.fr_%2B_signature_Institutionnel.png/3840px-Logo-IGESA.fr_%2B_signature_Institutionnel.png" alt="logo"></div>
+  <nav>
+    <a href="#" class="active">Mes démarches</a><a href="#">Vacances & séjours</a><a href="#">Prestations sociales</a><a href="#">Petite enfance</a><a href="#">Aide</a>
+  </nav>
+  <div class="user"><span class="avatar">LD</span><span>Louis Dubois</span></div>
+</header>
+
+<main>
+  <!-- ============ BANDEAU 2/10 : ALERTE DEMO DIABOLOCOM — NE JAMAIS SUPPRIMER ============ -->
+  <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p>
+  <!-- ============ BANDEAU 3/10 : SALUTATION (titre + sous-titre + bouton) ============ -->
+  <h1>Bonjour <span class="name">Louis</span></h1>
+  <p class="sub">Voici le suivi de vos démarches en cours au 4 septembre 2026.</p>
+  <button class="toggle" onclick="document.querySelectorAll('.amount').forEach(e=>e.style.visibility=e.style.visibility==='hidden'?'visible':'hidden')">Masquer les montants</button>
+
+  <!-- ============ BANDEAU 4/10 : BLOCS N°1 (3 blocs : liste principale, encart promo, compteur) ============ -->
+  <div class="grid">
+    <div class="col-left">
+    <div class="card">
+      <h2>Mes démarches en cours <a href="#">Tout voir &rarr;</a></h2>
+      <div class="row">
+        <div class="tag t1">VAC</div>
+        <div class="info"><b>Séjour Village Vacances - Presqu'île de Giens</b><span>Réservation vacances</span></div>
+        <span class="status pending">En cours d'instruction</span>
+        <div class="amount">450 &euro;</div>
+      </div>
+      <div class="row">
+        <div class="tag t2">COL</div>
+        <div class="info"><b>Colonie de vacances - Léo, 9 ans</b><span>Séjour montagne, juillet</span></div>
+        <span class="status ok">Confirmé</span>
+        <div class="amount">620 &euro;</div>
+      </div>
+      <div class="row">
+        <div class="tag t3">CRE</div>
+        <div class="info"><b>Place en crèche - Emma</b><span>Crèche Les P'tits Loups</span></div>
+        <span class="status pending">En liste d'attente</span>
+        <div class="amount">&mdash;</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Avancement de vos dossiers</h2>
+      <div class="achieve"><b>3</b> <span>/ 5 démarches finalisées</span></div>
+      <div class="progress"><i style="width:60%"></i></div>
+      <span style="font-size:13px;color:var(--muted)">60 % traités</span>
+    </div>
+    </div>
+
+    <div class="promo">
+      <h3>Vos prochaines vacances</h3>
+      <p>Découvrez nos offres de séjours et de locations pour cet été.</p>
+      <img src="https://www.esterel-cotedazur.com/wp-content/uploads/external/5fdd74778700e5ca6b25be482dd0f120-27793809-1000x710.jpeg" alt="Vacances">
+    </div>
+  </div>
+
+  <!-- ============ BANDEAU 5/10 : IMAGE (titre + visuel pleine largeur) ============ -->
+  <h2 class="section-title spaced">Retrouvez nos prochains <span class="name">évènements</span></h2>
+  <img class="demo-img" src="https://www.igesa.fr/fileadmin/_processed_/c/1/csm_4-Slider_mob_c0b6d36e4b.jpg" alt="Prochains évènements IGESA">
+
+  <!-- ============ BANDEAU 6/10 : BLOCS N°2 (titre + 4 tuiles de services) ============ -->
+  <h2 class="section-title spaced">Nos <span class="name">services</span></h2>
+  <div class="nav-grid">
+    <a class="nav-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/117/117641.png')"></i><span>Vacances & séjours</span></a>
+    <a class="nav-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/256/17/17004.png')"></i><span>Mon compte</span></a>
+    <a class="nav-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/256/26/26589.png')"></i><span>Mes démarches</span></a>
+    <a class="nav-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/10042/10042848.png')"></i><span>Aide & FAQ</span></a>
+  </div>
+
+  <!-- Bandeau d'assistance pleine largeur, texte centré -->
+  <!-- ============ BANDEAU 7/10 : TEXTE DESCRIPTIF (paragraphe gris pleine largeur) ============ -->
+  <div class="support-banner">
+    <p>Une question sur une réservation, un dossier de prestation ou une place en crèche ? Notre équipe fait tout son possible pour vous accompagner au plus vite. Avant de nous contacter, pensez à consulter notre <strong>Foire aux questions</strong> ci-dessous. La plupart des démarches courantes et pièces justificatives à fournir y sont déjà détaillées. Votre question persiste ? Cliquez sur le bouton «&nbsp;Nous contacter&nbsp;». Pensez à préciser votre numéro de bénéficiaire et le type de démarche concernée. N'hésitez pas à joindre vos justificatifs pour accélérer le traitement de votre dossier. Nos équipes traitent vos demandes du lundi au vendredi, généralement sous 5 à 8 jours ouvrés. Pour suivre l'avancement de vos dossiers en temps réel, consultez la rubrique «&nbsp;Mes démarches&nbsp;».</p>
+  </div>
+
+  <!-- ============ BANDEAU 8/10 : BLOCS N°3 (titre + 4 + 3 tuiles d'assistance) ============ -->
+  <h2 class="section-title">Si vous avez besoin d'<span class="name">aide</span></h2>
+  <!-- Rubriques : rangée de 4 -->
+  <div class="help-grid">
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/4659/4659011.png')"></i><span>Réservations & séjours</span></a>
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/686/686589.png')"></i><span>Prestations sociales</span></a>
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/3092/3092920.png')"></i><span>Petite enfance</span></a>
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/75/75668.png')"></i><span>Suivi de dossier</span></a>
+  </div>
+  <!-- Rubriques : rangée de 3 élargie -->
+  <div class="help-grid help-grid-3">
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/545/545676.png')"></i><span>Justificatifs & documents</span></a>
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/1034/1034153.png')"></i><span>Nous contacter</span></a>
+    <a class="help-tile" href="#"><i class="ico" style="--u:url('https://cdn-icons-png.flaticon.com/512/348/348488.png')"></i><span>Autres rubriques d'assistance</span></a>
+  </div>
+</main>
+
+<!-- ============ BANDEAU 9/10 : FOOTER 1 (logo client + pays / langue) ============ -->
+<div class="locale-bar">
+  <select aria-label="Langue">
+    <option selected>France</option>
+  </select>
+</div>
+
+<!-- ============ BANDEAU 10/10 : FOOTER 2 (menu legal + copyright Diabolocom) ============ -->
+<footer class="site">
+  <div class="inner">
+    <a href="#">Mes prestations sociales</a>
+    <a href="#">Assistance</a>
+    <a href="#">Qui sommes-nous</a>
+    <a href="#">Politique de confidentialité du site web</a>
+    <a href="#">Mentions légales</a>
+    <a href="#">Contact</a>
+    <span class="copy">&copy; Diabolocom, 2026</span>
+  </div>
+</footer>
+<!-- ============ SNIPPET CHATBOT — coller ici le script de demo, ne rien mettre apres ============ -->
+<script src="https://fr2.chat.diabolocom.com/01a05879-3f0f-74e0-a6d3-55fab0c489a3/config.js"></script>
+</body>
+</html>
