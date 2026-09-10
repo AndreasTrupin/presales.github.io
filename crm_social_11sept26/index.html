@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche CRM - Louis DUBOIS</title>
+    <!-- Importation de FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --log-hover: #f3f4f6;
+            --log-bg: #f9fafb;
+        }
+
+        /* Mode Sombre */
+        body.dark-mode {
+            --bg-color: #111827;
+            --card-bg: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border: #374151;
+            --log-hover: #374151;
+            --log-bg: #111827;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0; /* Reset du padding pour le bandeau */
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* --- BANDEAU SUPERIEUR --- */
+        .top-banner {
+            background-color: #04366E;
+            width: 100%;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-banner img {
+            height: 40px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover { background-color: var(--primary-hover); }
+
+        .btn-dark {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .btn-dark:hover { background-color: rgba(255, 255, 255, 0.2); }
+
+        /* Wrapper principal */
+        .main-wrapper {
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .crm-container {
+            display: grid;
+            grid-template-columns: 300px minmax(500px, 1fr) 320px;
+            gap: 20px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        /* --- COLONNE GAUCHE (PROFIL) --- */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .profile-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            transition: background-color 0.3s;
+        }
+
+        .profile-header {
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary);
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px auto;
+        }
+
+        .profile-header h2 { margin: 0 0 5px 0; font-size: 22px; }
+        .profile-header .job-title { color: var(--text-muted); font-size: 14px; font-weight: 500; margin-bottom: 15px; }
+
+        /* Icônes d'action */
+        .action-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .icon-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background-color: var(--log-bg);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .info-group { margin-bottom: 15px; }
+        .info-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .info-value { font-size: 14px; font-weight: 500; }
+        .info-value a { color: var(--primary); text-decoration: none; }
+
+
+        /* --- COLONNE CENTRALE (ONGLETS ET LOGS) --- */
+        .center-column {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Onglets */
+        .tabs-header {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            background-color: var(--log-bg);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 0;
+            text-align: center;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover { color: var(--primary); }
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: var(--card-bg);
+        }
+
+        .tab-content-area {
+            padding: 24px;
+            flex-grow: 1;
+        }
+
+        /* Liste des logs (Modifiée pour prendre plus de hauteur) */
+        .log-item {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            background-color: var(--card-bg);
+        }
+
+        .log-header {
+            padding: 18px;
+            background-color: var(--log-bg);
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* Espace entre les éléments pour plus de hauteur */
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .log-header:hover { background-color: var(--log-hover); }
+        
+        .log-title { font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 15px;}
+        
+        .badge { padding: 5px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; color: white; text-transform: uppercase; }
+        .badge-call { background-color: #10b981; }
+        .badge-email { background-color: #3b82f6; }
+        
+        .log-date { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+        .log-status { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px;}
+
+        /* Contenu dépliable des logs */
+        .log-details {
+            display: none;
+            padding: 18px;
+            border-top: 1px solid var(--border);
+            font-size: 14px;
+        }
+        .log-details-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .detail-box { background-color: var(--log-bg); padding: 12px; border-radius: 6px; }
+        .detail-box strong { display: block; color: var(--text-muted); font-size: 12px; margin-bottom: 6px; }
+
+        /* Section Notes */
+        #notes-section { display: none; }
+        .note-textarea {
+            width: 100%;
+            height: 100px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            background-color: var(--log-bg);
+            color: var(--text-main);
+            resize: vertical;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .saved-note {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+
+        /* --- COLONNE DROITE (DOSSIERS & PRESTATIONS) --- */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .widget-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .widget-card h3 {
+            margin-top: 0;
+            font-size: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dossier-item {
+            background-color: var(--log-bg);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        
+        .dossier-item:last-child { margin-bottom: 0; }
+        .dossier-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; display: block; color: var(--text-main); }
+        .dossier-desc { color: var(--text-muted); margin-bottom: 8px; }
+        
+        .status-pill {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .status-green { background-color: #d1fae5; color: #065f46; }
+        .status-orange { background-color: #fef3c7; color: #92400e; }
+        .status-blue { background-color: #dbeafe; color: #1e40af; }
+
+        /* Responsive basique */
+        @media (max-width: 1024px) {
+            .crm-container { grid-template-columns: 1fr; }
+            .left-column, .right-column { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Bandeau IGESA Full Width -->
+    <header class="top-banner">
+        <img src="https://www.igesa.fr/typo3temp/assets/_processed_/0/6/csm_IGESA-Blanc_ca389cd2c4.png" alt="Logo IGESA">
+        <button class="btn btn-dark" onclick="toggleDarkMode()" id="darkModeBtn"><i class="fas fa-moon"></i> Mode Sombre</button>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="crm-container">
+            
+            <!-- 1. COLONNE GAUCHE : PROFIL -->
+            <div class="left-column">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="avatar">LD</div>
+                        <h2>Louis DUBOIS</h2>
+                        <div class="job-title">Avant-Vente chez Diabolocom</div>
+                        
+                        <!-- 5 Icônes d'action -->
+                        <div class="action-icons">
+                            <div class="icon-btn" title="Ajouter une Note"><i class="fas fa-sticky-note"></i></div>
+                            <div class="icon-btn" title="Envoyer un Email"><i class="fas fa-envelope"></i></div>
+                            <div class="icon-btn" title="Appeler"><i class="fas fa-phone-alt"></i></div>
+                            <div class="icon-btn" title="Créer une Tâche"><i class="fas fa-tasks"></i></div>
+                            <div class="icon-btn" title="Voir l'Agenda"><i class="fas fa-calendar-alt"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="info-group">
+                        <div class="info-label">Numéro Client</div>
+                        <div class="info-value">C-09051993</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Email</div>
+                        <div class="info-value"><a href="mailto:louis.dubois@diabolocom.com">louis.dubois@diabolocom.com</a></div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Téléphone</div>
+                        <div class="info-value">+33 7 43 76 63 24</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Adresse</div>
+                        <div class="info-value">20 rue de la Paix<br>75002 PARIS</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Date d'inscription</div>
+                        <div class="info-value">23 Octobre 2023</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Dernier dossier</div>
+                        <div class="info-value">#IG-823420</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. COLONNE CENTRALE : ONGLETS ET HISTORIQUE -->
+            <div class="center-column">
+                
+                <!-- Menu des onglets -->
+                <div class="tabs-header">
+                    <button class="tab-btn active" onclick="switchTab(event, 'activity')">Activité</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'notes')">Notes</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'calls')">Appels</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'emails')">Emails</button>
+                </div>
+
+                <div class="tab-content-area">
+                    
+                    <!-- Section Notes -->
+                    <div id="notes-section">
+                        <textarea class="note-textarea" placeholder="Saisissez une nouvelle note sur ce client..."></textarea>
+                        <button class="btn" style="margin-bottom: 20px;">Enregistrer la note</button>
+                        
+                        <div class="saved-note">
+                            <strong>Note du 01/09/2026 :</strong><br>
+                            Le client préfère être contacté le matin entre 9h et 11h. Ne pas l'appeler le vendredi après-midi.
+                        </div>
+                    </div>
+
+                    <!-- Section Historique -->
+                    <div id="history-section">
+                        
+                        <!-- LOG 1 (APPEL) -->
+                        <div class="log-item log-call">
+                            <div class="log-header" onclick="toggleDetails('log1')">
+                                <div class="log-title"><span class="badge badge-call"><i class="fas fa-phone-alt"></i> Appel entrant</span> Support Technique</div>
+                                <div class="log-date"><i class="far fa-calendar-alt"></i> 09 Septembre 2026 à 14h30</div>
+                                <div class="log-status" style="color: #10b981;"><i class="fas fa-check-circle"></i> Clôture : Résolu - Documentation envoyée</div>
+                            </div>
+                            <div class="log-details" id="log1">
+                                <div class="log-details-grid">
+                                    <div class="detail-box">
+                                        <strong>Description de l'échange :</strong> 
+                                        Guidage pas à pas dans l'interface et envoi du lien vers la documentation développeur suite à un problème de configuration.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LOG 2 (APPEL) -->
+                        <div class="log-item log-call">
+                            <div class="log-header" onclick="toggleDetails('log2')">
+                                <div class="log-title"><span class="badge badge-call"><i class="fas fa-phone-alt"></i> Appel sortant</span> Point d'avancement prêt travaux</div>
+                                <div class="log-date"><i class="far fa-calendar-alt"></i> 05 Septembre 2026 à 11h15</div>
+                                <div class="log-status" style="color: #f59e0b;"><i class="fas fa-clock"></i> Clôture : En attente de justificatifs</div>
+                            </div>
+                            <div class="log-details" id="log2">
+                                <div class="log-details-grid">
+                                    <div class="detail-box">
+                                        <strong>Description de l'échange :</strong> 
+                                        Appel pour relancer M. Dubois concernant les devis artisans manquants pour finaliser son dossier de prêt (#P-10452). Il me les envoie par mail dans la semaine.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LOG 3 (EMAIL) -->
+                        <div class="log-item log-email">
+                            <div class="log-header" onclick="toggleDetails('log3')">
+                                <div class="log-title"><span class="badge badge-email"><i class="fas fa-envelope"></i> Email Reçu</span> Envoi devis travaux</div>
+                                <div class="log-date"><i class="far fa-calendar-alt"></i> 05 Septembre 2026 à 16h42</div>
+                                <div class="log-status" style="color: #3b82f6;"><i class="fas fa-folder-open"></i> Statut : Pièces jointes enregistrées dans le dossier</div>
+                            </div>
+                            <div class="log-details" id="log3">
+                                <div class="log-details-grid">
+                                    <div class="detail-box">
+                                        <strong>Corps du message :</strong><br>
+                                        "Bonjour,<br>Suite à notre appel de ce matin, veuillez trouver en pièce jointe les deux devis pour la rénovation de la salle de bain.<br>Merci de m'informer de la suite de la procédure. Cordialement, Louis."
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LOG 4 (APPEL) -->
+                        <div class="log-item log-call">
+                            <div class="log-header" onclick="toggleDetails('log4')">
+                                <div class="log-title"><span class="badge badge-call"><i class="fas fa-phone-alt"></i> Appel sortant</span> Suivi ouverture compte pro</div>
+                                <div class="log-date"><i class="far fa-calendar-alt"></i> 02 Septembre 2026 à 10h15</div>
+                                <div class="log-status" style="color: #f59e0b;"><i class="fas fa-clock"></i> Clôture : En attente signature document interne</div>
+                            </div>
+                            <div class="log-details" id="log4">
+                                <div class="log-details-grid">
+                                    <div class="detail-box">
+                                        <strong>Description de l'échange :</strong> 
+                                        Attente de la signature du représentant légal pour valider la bascule de numéro. On se rappelle la semaine prochaine.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- LOG 5 (EMAIL) -->
+                        <div class="log-item log-email">
+                            <div class="log-header" onclick="toggleDetails('log5')">
+                                <div class="log-title"><span class="badge badge-email"><i class="fas fa-paper-plane"></i> Email Envoyé</span> Confirmation réservation Camping Aveyron</div>
+                                <div class="log-date"><i class="far fa-calendar-alt"></i> 25 Août 2026 à 09h05</div>
+                                <div class="log-status" style="color: #10b981;"><i class="fas fa-check-circle"></i> Statut : Envoyé avec succès</div>
+                            </div>
+                            <div class="log-details" id="log5">
+                                <div class="log-details-grid">
+                                    <div class="detail-box">
+                                        <strong>Corps du message :</strong><br>
+                                        "Bonjour Louis,<br>Nous vous confirmons la réservation de votre séjour dans l'Aveyron (Dossier #V-10293). Le solde a bien été prélevé. Vous trouverez votre bon de séjour en pièce jointe..."
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LOG 6 (APPEL) -->
+                        <div class="log-item log-call">
+                            <div class="log-header" onclick="toggleDetails('log6')">
+                                <div class="log-title"><span class="badge badge-call"><i class="fas fa-phone-alt"></i> Appel entrant</span> Renseignement Réservation Hôtel Antibes</div>
+                                <div class="log-date"><i class="far fa-calendar-alt"></i> 14 Août 2026 à 15h20</div>
+                                <div class="log-status" style="color: #10b981;"><i class="fas fa-check-circle"></i> Clôture : Réservation pré-validée (Acompte demandé)</div>
+                            </div>
+                            <div class="log-details" id="log6">
+                                <div class="log-details-grid">
+                                    <div class="detail-box">
+                                        <strong>Description de l'échange :</strong> 
+                                        Le client souhaitait connaître les disponibilités pour la 1ère semaine d'août. L'option a été posée, le client doit verser l'acompte de 30% d'ici 72h pour confirmer définitivement.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LOG 7 (EMAIL) -->
+                        <div class="log-item log-email">
+                            <div class="log-header" onclick="toggleDetails('log7')">
+                                <div class="log-title"><span class="badge badge-email"><i class="fas fa-paper-plane"></i> Email Envoyé</span> Bienvenue (Onboarding)</div>
+                                <div class="log-date"><i class="far fa-calendar-alt"></i> 23 Octobre 2023 à 11h00</div>
+                                <div class="log-status" style="color: #10b981;"><i class="fas fa-check-circle"></i> Statut : Délivré</div>
+                            </div>
+                            <div class="log-details" id="log7">
+                                <div class="log-details-grid">
+                                    <div class="detail-box">
+                                        <strong>Corps du message :</strong><br>
+                                        "Bonjour Louis,<br>Bienvenue chez IGESA ! Votre compte est désormais actif. Vous pouvez vous connecter à votre espace client via le lien suivant..."
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. COLONNE DROITE : DOSSIERS & PRESTATIONS -->
+            <div class="right-column">
+                
+                <!-- Carte Voyages -->
+                <div class="widget-card">
+                    <h3><i class="fas fa-campground" style="color: var(--primary);"></i> Réservations de voyage</h3>
+                    
+                    <div class="dossier-item">
+                        <span class="dossier-title">Camping dans l'Aveyron</span>
+                        <div class="dossier-desc">Du 14 au 21 Juillet 2027<br><em>Dossier #V-10293</em></div>
+                        <span class="status-pill status-green">Confirmé</span>
+                    </div>
+                    
+                    <div class="dossier-item">
+                        <span class="dossier-title">Hôtel à Antibes</span>
+                        <div class="dossier-desc">Du 05 au 12 Août 2027<br><em>Dossier #V-11844</em></div>
+                        <span class="status-pill status-orange">En attente d'acompte</span>
+                    </div>
+                </div>
+
+                <!-- Carte Prestations -->
+                <div class="widget-card">
+                    <h3><i class="fas fa-hand-holding-usd" style="color: var(--primary);"></i> Prestations Sociales</h3>
+                    
+                    <div class="dossier-item">
+                        <span class="dossier-title">Prêt Accession à la propriété</span>
+                        <div class="dossier-desc">Montant demandé : <strong>15 000,00 €</strong><br><em>Dossier #P-9923</em></div>
+                        <span class="status-pill status-blue">Débloqué</span>
+                    </div>
+                    
+                    <div class="dossier-item">
+                        <span class="dossier-title">Prêt Travaux</span>
+                        <div class="dossier-desc">Montant demandé : <strong>4 500,00 €</strong><br><em>Dossier #P-10452</em></div>
+                        <span class="status-pill status-orange">À l'étude</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour déplier/replier les détails d'un log
+        function toggleDetails(logId) {
+            const details = document.getElementById(logId);
+            if (details.style.display === "block") {
+                details.style.display = "none";
+            } else {
+                details.style.display = "block";
+            }
+        }
+
+        // Fonction de gestion des onglets
+        function switchTab(event, tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const historySection = document.getElementById('history-section');
+            const notesSection = document.getElementById('notes-section');
+            const allLogs = document.querySelectorAll('.log-item');
+
+            if (tabName === 'notes') {
+                historySection.style.display = 'none';
+                notesSection.style.display = 'block';
+            } else {
+                historySection.style.display = 'block';
+                notesSection.style.display = 'none';
+
+                allLogs.forEach(log => {
+                    if (tabName === 'activity') {
+                        log.style.display = 'block';
+                    } else if (tabName === 'calls') {
+                        log.style.display = log.classList.contains('log-call') ? 'block' : 'none';
+                    } else if (tabName === 'emails') {
+                        log.style.display = log.classList.contains('log-email') ? 'block' : 'none';
+                    }
+                });
+            }
+        }
+
+        // Basculer en Mode Sombre
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.getElementById('darkModeBtn');
+            if (document.body.classList.contains('dark-mode')) {
+                btn.innerHTML = '<i class="fas fa-sun"></i> Mode Clair';
+            } else {
+                btn.innerHTML = '<i class="fas fa-moon"></i> Mode Sombre';
+            }
+        }
+    </script>
+</body>
+</html>
