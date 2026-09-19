@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulateur de conversation WhatsApp</title>
+<style>
+  :root{
+    --wa-header:#075e54;
+    --wa-header-dark:#054c40;
+    --wa-bg:#e5ddd5;
+    --wa-bubble-in:#ffffff;
+    --wa-bubble-out:#dcf8c6;
+    --wa-text:#111b21;
+    --wa-meta:#667781;
+    --wa-check:#53bdeb;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    height:100%;
+    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    background:#0b141a;
+  }
+  .phone{
+    max-width:460px;
+    margin:0 auto;
+    height:100dvh;
+    display:flex;
+    flex-direction:column;
+    background:var(--wa-bg);
+    box-shadow:0 0 40px rgba(0,0,0,.4);
+  }
+
+  /* ----- header ----- */
+  .chat-header{
+    background:var(--wa-header);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 14px;
+    flex:0 0 auto;
+  }
+  .chat-header .avatar{
+    width:38px;height:38px;border-radius:50%;
+    background:#25d366;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:600;font-size:15px;color:#fff;
+    flex:0 0 auto;
+  }
+  .chat-header .infos{display:flex;flex-direction:column;line-height:1.2;overflow:hidden;}
+  .chat-header .name{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .chat-header .status{font-size:12px;opacity:.85;}
+  .chat-header .icons{margin-left:auto;display:flex;gap:18px;opacity:.9;}
+
+  /* ----- body ----- */
+  .chat-body{
+    flex:1 1 auto;
+    overflow-y:auto;
+    padding:14px 6% 10px;
+    background-image:
+      linear-gradient(rgba(229,221,213,.92), rgba(229,221,213,.92)),
+      repeating-linear-gradient(45deg, rgba(0,0,0,.025) 0 2px, transparent 2px 40px);
+  }
+  .day-chip{
+    text-align:center;
+    margin:6px auto 14px;
+  }
+  .day-chip span{
+    background:#e1f2fb;
+    color:#54656f;
+    font-size:12.5px;
+    padding:5px 12px;
+    border-radius:8px;
+    box-shadow:0 1px 0 rgba(0,0,0,.08);
+  }
+
+  .row{display:flex;margin-bottom:3px;}
+  .row.out{justify-content:flex-end;}
+  .row.in{justify-content:flex-start;}
+
+  .bubble{
+    position:relative;
+    max-width:78%;
+    padding:6px 9px 8px 9px;
+    border-radius:8px;
+    font-size:14.3px;
+    line-height:1.4;
+    color:var(--wa-text);
+    box-shadow:0 1px 0.5px rgba(0,0,0,.13);
+    white-space:pre-wrap;
+    word-wrap:break-word;
+  }
+  .bubble.in{background:var(--wa-bubble-in);border-top-left-radius:0;}
+  .bubble.out{background:var(--wa-bubble-out);border-top-right-radius:0;}
+
+  .meta{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:3px;
+    font-size:11px;
+    color:var(--wa-meta);
+    margin-top:2px;
+    float:right;
+    margin-left:8px;
+  }
+  .meta svg{width:15px;height:11px;fill:var(--wa-check);}
+
+  /* ----- footer (fake input bar) ----- */
+  .chat-footer{
+    flex:0 0 auto;
+    background:#f0f0f0;
+    padding:8px 10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .chat-footer .input{
+    flex:1;
+    background:#fff;
+    border-radius:20px;
+    padding:9px 14px;
+    color:#8696a0;
+    font-size:14px;
+  }
+  .chat-footer .mic{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--wa-header);
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+  }
+  .chat-footer .mic svg{width:18px;height:18px;fill:#fff;}
+
+  /* ----- empty state / help ----- */
+  .help{
+    margin:40px 16px;
+    background:#fff;
+    border-radius:10px;
+    padding:18px 20px;
+    color:#333;
+    font-size:14px;
+    line-height:1.55;
+    box-shadow:0 1px 3px rgba(0,0,0,.15);
+  }
+  .help h2{margin-top:0;font-size:16px;}
+  .help code{
+    background:#f2f2f2;
+    padding:2px 5px;
+    border-radius:4px;
+    font-size:12.5px;
+    word-break:break-all;
+  }
+  .help a{color:var(--wa-header);}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="chat-header">
+    <div class="avatar" id="avatar">B</div>
+    <div class="infos">
+      <div class="name" id="contactName">Assistant</div>
+      <div class="status" id="contactStatus">en ligne</div>
+    </div>
+    <div class="icons">📹 📞 ⋮</div>
+  </div>
+
+  <div class="chat-body" id="chatBody"></div>
+
+  <div class="chat-footer">
+    <div class="input">Message</div>
+    <div class="mic"><svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const checkSvg = '<svg viewBox="0 0 16 11"><path d="M11.071.653a.457.457 0 0 0-.304-.102.493.493 0 0 0-.381.178l-6.19 7.636-2.405-2.272a.463.463 0 0 0-.336-.126.457.457 0 0 0-.328.14l-.356.356a.472.472 0 0 0 0 .672l2.94 2.94c.09.09.207.14.336.14a.463.463 0 0 0 .336-.14l6.766-8.35a.472.472 0 0 0-.078-.672z"/></svg>';
+
+  function getRawParam() {
+    const search = window.location.search;
+    if (search.length > 1) {
+      // essaie de décoder proprement, sinon prend la chaîne brute
+      try { return decodeURIComponent(search.substring(1)); }
+      catch (e) { return search.substring(1); }
+    }
+    return "";
+  }
+
+  function parseConversation(raw) {
+    return raw.split("|")
+      .map(s => s.trim())
+      .filter(Boolean)
+      .map(part => {
+        const m = part.match(/^\[(BOT|USER)\]\s*:\s*([\s\S]*)$/i);
+        if (!m) return null;
+        return { role: m[1].toUpperCase(), text: m[2].trim() };
+      })
+      .filter(Boolean);
+  }
+
+  function randomTime(startHour, index) {
+    const h = startHour + Math.floor(index / 6);
+    const m = (index * 7) % 60;
+    return String(h % 24).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+  }
+
+  function render(messages) {
+    const body = document.getElementById("chatBody");
+    body.innerHTML = "";
+
+    if (!messages.length) {
+      body.innerHTML = `
+        <div class="help">
+          <h2>Comment utiliser cette page</h2>
+          <p>Ajoutez votre conversation après le <code>?</code> de l'URL, au format :</p>
+          <p><code>[BOT] : Bonjour, comment puis-je vous aider ? | [USER] : J'ai un souci avec ma commande | [BOT] : Je regarde ça tout de suite</code></p>
+          <p>Exemple d'URL complète :</p>
+          <p><code>${location.origin}${location.pathname}?[BOT] : Bonjour | [USER] : Salut</code></p>
+          <p>Chaque bloc <code>[BOT]</code> ou <code>[USER]</code> devient une bulle, séparée par <code>|</code>.</p>
+        </div>`;
+      return;
+    }
+
+    const chip = document.createElement("div");
+    chip.className = "day-chip";
+    chip.innerHTML = "<span>Aujourd'hui</span>";
+    body.appendChild(chip);
+
+    messages.forEach((msg, i) => {
+      const isOut = msg.role === "USER";
+      const row = document.createElement("div");
+      row.className = "row " + (isOut ? "out" : "in");
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble " + (isOut ? "out" : "in");
+
+      const textSpan = document.createElement("span");
+      textSpan.textContent = msg.text;
+
+      const meta = document.createElement("span");
+      meta.className = "meta";
+      meta.innerHTML = randomTime(9, i) + (isOut ? " " + checkSvg : "");
+
+      bubble.appendChild(textSpan);
+      bubble.appendChild(meta);
+      row.appendChild(bubble);
+      body.appendChild(row);
+    });
+
+    body.scrollTop = body.scrollHeight;
+  }
+
+  const raw = getRawParam();
+  const messages = parseConversation(raw);
+  render(messages);
+
+  // ajuste le nom du contact affiché dans l'en-tête si un BOT est présent
+  if (messages.some(m => m.role === "BOT")) {
+    document.getElementById("contactName").textContent = "Assistant";
+  }
+})();
+</script>
+</body>
+</html>
