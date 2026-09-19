@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulateur de chatbot</title>
+<style>
+  :root{
+    --sky-1:#38bdf8;
+    --sky-2:#0ea5e9;
+    --sky-header-from:#0ea5e9;
+    --sky-header-to:#38bdf8;
+    --bg:#f0f9ff;
+    --bubble-bot:#ffffff;
+    --bubble-user:#0ea5e9;
+    --text-dark:#0c2740;
+    --text-light:#ffffff;
+    --meta:#7ea3bd;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    height:100%;
+    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    background:#e2e8f0;
+  }
+  .widget{
+    max-width:400px;
+    margin:0 auto;
+    height:100dvh;
+    display:flex;
+    flex-direction:column;
+    background:var(--bg);
+    box-shadow:0 0 40px rgba(0,0,0,.25);
+    border-radius:0;
+    overflow:hidden;
+  }
+  @media (min-width:420px){
+    body{display:flex;align-items:center;justify-content:center;}
+    .widget{height:min(700px,94dvh);border-radius:18px;margin:0;}
+  }
+
+  /* ----- header ----- */
+  .chat-header{
+    background:linear-gradient(135deg,var(--sky-header-from),var(--sky-header-to));
+    color:var(--text-light);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:16px 16px;
+    flex:0 0 auto;
+  }
+  .chat-header .avatar{
+    width:40px;height:40px;border-radius:50%;
+    background:#ffffff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;
+    flex:0 0 auto;
+    box-shadow:0 1px 3px rgba(0,0,0,.15);
+  }
+  .chat-header .infos{display:flex;flex-direction:column;line-height:1.25;overflow:hidden;}
+  .chat-header .name{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .chat-header .status{font-size:12px;opacity:.9;display:flex;align-items:center;gap:5px;}
+  .chat-header .status .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;}
+  .chat-header .close{margin-left:auto;opacity:.85;font-size:18px;cursor:pointer;}
+
+  /* ----- body ----- */
+  .chat-body{
+    flex:1 1 auto;
+    overflow-y:auto;
+    padding:18px 14px 12px;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(56,189,248,.08), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(14,165,233,.08), transparent 40%),
+      var(--bg);
+  }
+  .day-chip{text-align:center;margin:0 auto 16px;}
+  .day-chip span{
+    background:#e0f2fe;
+    color:#0369a1;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.02em;
+    padding:5px 12px;
+    border-radius:20px;
+  }
+
+  .row{display:flex;align-items:flex-end;gap:8px;margin-bottom:10px;}
+  .row.in{justify-content:flex-start;}
+  .row.out{justify-content:flex-end;}
+
+  .row-avatar{
+    width:26px;height:26px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;flex:0 0 auto;
+  }
+
+  .bubble-wrap{display:flex;flex-direction:column;max-width:76%;}
+  .bubble{
+    padding:10px 13px;
+    font-size:14.5px;
+    line-height:1.45;
+    box-shadow:0 1px 2px rgba(15,60,90,.12);
+    white-space:pre-wrap;
+    word-wrap:break-word;
+  }
+  .bubble.in{
+    background:var(--bubble-bot);
+    color:var(--text-dark);
+    border-radius:4px 16px 16px 16px;
+    border:1px solid #e0f0fb;
+  }
+  .bubble.out{
+    background:linear-gradient(135deg,var(--sky-1),var(--sky-2));
+    color:var(--text-light);
+    border-radius:16px 4px 16px 16px;
+  }
+  .time{
+    font-size:10.5px;
+    color:var(--meta);
+    margin-top:4px;
+  }
+  .row.in .time{text-align:left;margin-left:2px;}
+  .row.out .time{text-align:right;margin-right:2px;}
+
+  /* ----- footer ----- */
+  .chat-footer{
+    flex:0 0 auto;
+    background:#fff;
+    border-top:1px solid #e2ecf3;
+    padding:10px 12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .chat-footer .input{
+    flex:1;
+    background:#f0f9ff;
+    border-radius:22px;
+    padding:10px 15px;
+    color:#8fa7bb;
+    font-size:14px;
+  }
+  .chat-footer .send{
+    width:38px;height:38px;border-radius:50%;
+    background:linear-gradient(135deg,var(--sky-1),var(--sky-2));
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+  }
+  .chat-footer .send svg{width:17px;height:17px;fill:#fff;}
+
+  /* ----- empty state / help ----- */
+  .help{
+    margin:30px 6px;
+    background:#fff;
+    border:1px solid #e0f0fb;
+    border-radius:14px;
+    padding:18px 20px;
+    color:#0c2740;
+    font-size:14px;
+    line-height:1.55;
+    box-shadow:0 1px 3px rgba(15,60,90,.1);
+  }
+  .help h2{margin-top:0;font-size:16px;color:#0369a1;}
+  .help code{
+    background:#f0f9ff;
+    padding:2px 5px;
+    border-radius:4px;
+    font-size:12.5px;
+    word-break:break-all;
+    color:#0c2740;
+  }
+</style>
+</head>
+<body>
+
+<div class="widget">
+  <div class="chat-header">
+    <div class="avatar">🤖</div>
+    <div class="infos">
+      <div class="name" id="contactName">Assistant virtuel</div>
+      <div class="status"><span class="dot"></span> en ligne</div>
+    </div>
+    <div class="close">✕</div>
+  </div>
+
+  <div class="chat-body" id="chatBody"></div>
+
+  <div class="chat-footer">
+    <div class="input">Écrivez votre message…</div>
+    <div class="send"><svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  function getRawParam() {
+    const search = window.location.search;
+    if (search.length > 1) {
+      try { return decodeURIComponent(search.substring(1)); }
+      catch (e) { return search.substring(1); }
+    }
+    return "";
+  }
+
+  function parseConversation(raw) {
+    return raw.split("|")
+      .map(s => s.trim())
+      .filter(Boolean)
+      .map(part => {
+        const m = part.match(/^\[(BOT|USER)\]\s*:\s*([\s\S]*)$/i);
+        if (!m) return null;
+        return { role: m[1].toUpperCase(), text: m[2].trim() };
+      })
+      .filter(Boolean);
+  }
+
+  function randomTime(startHour, index) {
+    const h = startHour + Math.floor(index / 6);
+    const m = (index * 7) % 60;
+    return String(h % 24).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+  }
+
+  function render(messages) {
+    const body = document.getElementById("chatBody");
+    body.innerHTML = "";
+
+    if (!messages.length) {
+      body.innerHTML = `
+        <div class="help">
+          <h2>Comment utiliser cette page</h2>
+          <p>Ajoutez votre conversation après le <code>?</code> de l'URL, au format :</p>
+          <p><code>[BOT] : Bonjour, comment puis-je vous aider ? | [USER] : J'ai un souci avec ma commande | [BOT] : Je regarde ça tout de suite</code></p>
+          <p>Exemple d'URL complète :</p>
+          <p><code>${location.origin}${location.pathname}?[BOT] : Bonjour | [USER] : Salut</code></p>
+          <p>Chaque bloc <code>[BOT]</code> ou <code>[USER]</code> devient une bulle, séparée par <code>|</code>.</p>
+        </div>`;
+      return;
+    }
+
+    const chip = document.createElement("div");
+    chip.className = "day-chip";
+    chip.innerHTML = "<span>Aujourd'hui</span>";
+    body.appendChild(chip);
+
+    messages.forEach((msg, i) => {
+      const isOut = msg.role === "USER";
+      const row = document.createElement("div");
+      row.className = "row " + (isOut ? "out" : "in");
+
+      if (!isOut) {
+        const av = document.createElement("div");
+        av.className = "row-avatar";
+        av.textContent = "🤖";
+        row.appendChild(av);
+      }
+
+      const wrap = document.createElement("div");
+      wrap.className = "bubble-wrap";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble " + (isOut ? "out" : "in");
+      bubble.textContent = msg.text;
+
+      const time = document.createElement("div");
+      time.className = "time";
+      time.textContent = randomTime(9, i);
+
+      wrap.appendChild(bubble);
+      wrap.appendChild(time);
+      row.appendChild(wrap);
+      body.appendChild(row);
+    });
+
+    body.scrollTop = body.scrollHeight;
+  }
+
+  const raw = getRawParam();
+  const messages = parseConversation(raw);
+  render(messages);
+})();
+</script>
+</body>
+</html>
