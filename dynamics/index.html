@@ -1,9 +1,19 @@
 <!doctype html>
 <html>
-<body style="margin:0; overflow:hidden;">
-  <iframe
-    src="https://org64f41.crm12.dynamics.com/main.aspx?appid=588314b3-882c-eb11-bf68-000d3a898b6e&cmdbar=true&navbar=on&pagetype=entityrecord&etn=contact&id=9ef070af-49b0-f111-aaac-00224839dc41"
-    style="width:150%; height:150%; transform:scale(0.67); transform-origin:0 0; border:0;">
-  </iframe>
+<head>
+<style>
+  :root { --s: 0.75; }              /* 0.67 = plus dézoomé, 0.8 = plus lisible */
+  html, body { margin:0; height:100%; overflow:hidden; }
+  iframe {
+    width:  calc(100vw / var(--s));
+    height: calc(100vh / var(--s));
+    transform: scale(var(--s));
+    transform-origin: 0 0;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+  <iframe src="https://org64f41.crm12.dynamics.com/main.aspx?appid=588314b3-882c-eb11-bf68-000d3a898b6e&pagetype=entityrecord&etn=contact&id=e36f0283-46ac-f111-aaac-00224839dc41"></iframe>
 </body>
 </html>
