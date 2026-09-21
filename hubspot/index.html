@@ -14,23 +14,24 @@
   }
 
   :root {
-    --zoom: 0.60;      /* dézoom, comme avant */
-    --sidebar: 240px;  /* largeur approximative du bandeau HubSpot à masquer, à ajuster */
+    --zoom: 0.6;       /* dézoom */
+    --sidebar: 240px;  /* largeur du bandeau gauche à masquer, à ajuster */
+    --topbar: 56px;    /* hauteur du bandeau du haut (barre de recherche) à masquer, à ajuster */
   }
 
   .viewport {
     position: relative;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* c'est ça qui "rogne" le bandeau une fois décalé hors du cadre */
+    overflow: hidden; /* rogne tout ce qui dépasse une fois le contenu décalé */
   }
 
   .zoom-wrap {
     position: absolute;
-    top: 0;
+    top: calc(var(--topbar) * -1 * var(--zoom));
     left: calc(var(--sidebar) * -1 * var(--zoom));
     width: calc(100% / var(--zoom) + var(--sidebar));
-    height: calc(100% / var(--zoom));
+    height: calc(100% / var(--zoom) + var(--topbar));
     transform: scale(var(--zoom));
     transform-origin: 0 0;
   }
