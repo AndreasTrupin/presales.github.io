@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,15 +13,23 @@
     background: #f5f8fa;
   }
 
-  /* ----- réglage du dézoom -----
-     0.8 = 80% (comme pour la page WhatsApp), on peut descendre à 0.7, 0.6...
-     plus la valeur est petite, plus on voit "large" mais plus petit visuellement */
   :root {
-    --zoom: 0.8;
+    --zoom: 0.67;      /* dézoom, comme avant */
+    --sidebar: 240px;  /* largeur approximative du bandeau HubSpot à masquer, à ajuster */
+  }
+
+  .viewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* c'est ça qui "rogne" le bandeau une fois décalé hors du cadre */
   }
 
   .zoom-wrap {
-    width: calc(100% / var(--zoom));
+    position: absolute;
+    top: 0;
+    left: calc(var(--sidebar) * -1 * var(--zoom));
+    width: calc(100% / var(--zoom) + var(--sidebar));
     height: calc(100% / var(--zoom));
     transform: scale(var(--zoom));
     transform-origin: 0 0;
@@ -38,12 +45,14 @@
 </head>
 <body>
 
-<div class="zoom-wrap">
-  <iframe
-    src="https://app.hubspot.com/contacts/19534769/record/0-1/248048780853"
-    referrerpolicy="no-referrer-when-downgrade"
-    allow="clipboard-read; clipboard-write"
-  ></iframe>
+<div class="viewport">
+  <div class="zoom-wrap">
+    <iframe
+      src="https://app.hubspot.com/contacts/19534769/record/0-1/248048780853"
+      referrerpolicy="no-referrer-when-downgrade"
+      allow="clipboard-read; clipboard-write"
+    ></iframe>
+  </div>
 </div>
 
 </body>
