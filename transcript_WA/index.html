@@ -235,12 +235,7 @@
       const textSpan = document.createElement("span");
       textSpan.textContent = msg.text;
 
-      const meta = document.createElement("span");
-      meta.className = "meta";
-      meta.innerHTML = randomTime(9, i) + (isOut ? " " + checkSvg : "");
-
       bubble.appendChild(textSpan);
-      bubble.appendChild(meta);
       row.appendChild(bubble);
       body.appendChild(row);
     });
