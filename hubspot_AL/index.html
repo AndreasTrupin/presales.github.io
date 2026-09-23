@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Embed HubSpot - Fiche contact</title>
 <style>
   html, body {
     margin: 0;
@@ -8,16 +14,16 @@
   }
 
   :root {
-    --zoom: 0.8;        /* zoom souhaité */
-    --sidebar: 300px;   /* largeur RÉELLE du bandeau contact à masquer — à remesurer avec l'inspecteur */
-    --topbar: 56px;      /* hauteur RÉELLE de la barre du haut à masquer — à remesurer */
+    --zoom: 0.6;       /* dézoom */
+    --sidebar: 236px;  /* largeur du bandeau gauche à masquer, à ajuster */
+    --topbar: 44px;    /* hauteur du bandeau du haut (barre de recherche) à masquer, à ajuster */
   }
 
   .viewport {
     position: relative;
     width: 100%;
     height: 100%;
-    overflow: hidden;      /* passe à "auto" si tu veux pouvoir scroller ce qui est coupé */
+    overflow: hidden; /* rogne tout ce qui dépasse une fois le contenu décalé */
   }
 
   .zoom-wrap {
@@ -35,6 +41,20 @@
     height: 100%;
     border: none;
     display: block;
-    pointer-events: auto; /* garde l'interactivité si tu passes .viewport en overflow:auto */
   }
 </style>
+</head>
+<body>
+
+<div class="viewport">
+  <div class="zoom-wrap">
+    <iframe
+      src="https://app.hubspot.com/contacts/19534769/record/0-1/248048780853"
+      referrerpolicy="no-referrer-when-downgrade"
+      allow="clipboard-read; clipboard-write"
+    ></iframe>
+  </div>
+</div>
+
+</body>
+</html>
