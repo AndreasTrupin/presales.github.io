@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Glamuse - Mon espace</title>
+<title>Hunkemöller - My Account</title>
 <style>
   /* =====================================================================
      THEME — seules ces variables changent d'un client a l'autre.
@@ -11,12 +11,12 @@
      --tag1/2/3 : pastilles de categorie dans le bandeau BLOCS N°1
      ===================================================================== */
   :root{
-    --bg:#f4f2f0; --card:#45484d; --card2:#565a60; --line:#585c62;
-    --banner:#e8e5e2; --footer:#0d0d0d;
-    --txt:#f5f5f5; --muted:#b8bcc0; --accent:#000000;
-    --tag1:#7a2530; --tag2:#b98089; --tag3:#9c8058;
+    --bg:#fdf9f9; --card:#f7ebec; --card2:#efd9db; --line:#e3cbcd;
+    --banner:#f5e9ea; --footer:#f1e2e3;
+    --txt:#351c22; --muted:#8a6469; --accent:#351c22;
+    --tag1:#6b2c3a; --tag2:#c98a94; --tag3:#b48a6a;
     --ok:#2ea043; --pending:#d29922;
-    --footer-txt:#ffffff; --footer-muted:#c9c9c9; --footer-line:#262626;
+    --footer-txt:#351c22; --footer-muted:#8a5a62; --footer-line:#e3cfd1;
   }
   *{box-sizing:border-box}
   body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
@@ -48,8 +48,8 @@
   .row .info b{display:block;font-size:14px}
   .row .info span{font-size:12px;color:var(--muted)}
   .status{font-size:12px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex:none}
-  .status.ok{background:rgba(46,160,67,.2);color:#5fd07a}
-  .status.pending{background:rgba(210,153,34,.2);color:#e3b64a}
+  .status.ok{background:rgba(46,160,67,.2);color:#217a35}
+  .status.pending{background:rgba(210,153,34,.2);color:#8a6212}
   .amount{font-weight:700;font-size:15px;min-width:60px;text-align:right;flex:none}
 
   .demo-note{text-align:left;color:#5a6672;font-size:14px;font-style:italic;margin:0 0 18px;white-space:nowrap;line-height:1.6}
@@ -111,100 +111,100 @@
 <body>
 <!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
 <header>
-  <div class="brand"><img class="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGJc8Rdeiatzz6XHvghjJ1oz20JZhBRU1Pi23gbmD31g&s=10" alt="logo"></div>
+  <div class="brand"><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Hunkemoeller_Logo.svg" alt="logo"></div>
   <nav>
-    <a href="#" class="active">Mes commandes</a><a href="#">Retours &amp; échanges</a><a href="#">Guide des tailles</a><a href="#">Programme fidélité</a><a href="#">Aide</a>
+    <a href="#" class="active">My Orders</a><a href="#">Returns &amp; Exchanges</a><a href="#">Bra Fit Guide</a><a href="#">Loyalty Program</a><a href="#">Help</a>
   </nav>
-  <div class="user"><span class="avatar">CB</span><span>Camille Bernard</span></div>
+  <div class="user"><span class="avatar">EC</span><span>Emma Clarke</span></div>
 </header>
 
 <main>
   <!-- ============ BANDEAU 2/10 : ALERTE DEMO DIABOLOCOM — NE JAMAIS SUPPRIMER ============ -->
   <p class="demo-note">Ceci est un site de démonstration conçu par l'équipe Presales de Diabolocom afin de tester les fonctionnalités du Chatbot.</p>
   <!-- ============ BANDEAU 3/10 : SALUTATION (titre + sous-titre + bouton) ============ -->
-  <h1>Bonjour <span class="name">Camille</span></h1>
-  <p class="sub">Voici un aperçu de vos derniers achats et retours au 31 août 2026.</p>
-  <button class="toggle" onclick="document.querySelectorAll('.amount').forEach(e=>e.style.visibility=e.style.visibility==='hidden'?'visible':'hidden')">Masquer les montants</button>
+  <h1>Hello <span class="name">Emma</span></h1>
+  <p class="sub">Here's an overview of your recent orders and returns as of September 23, 2026.</p>
+  <button class="toggle" onclick="document.querySelectorAll('.amount').forEach(e=>e.style.visibility=e.style.visibility==='hidden'?'visible':'hidden')">Hide amounts</button>
 
   <!-- ============ BANDEAU 4/10 : BLOCS N°1 (3 blocs : liste principale, encart promo, compteur) ============ -->
   <div class="grid">
     <div class="col-left">
     <div class="card">
-      <h2>Vos derniers achats <a href="#" style="color:#ffffff">Tout voir &rarr;</a></h2>
+      <h2>Your Recent Orders <a href="#">View all &rarr;</a></h2>
       <div class="row">
-        <div class="tag t1">SG</div>
-        <div class="info"><b>Ensemble dentelle Émotion</b><span>Soutien-gorge &amp; culotte</span></div>
-        <span class="status ok">Livré</span>
-        <div class="amount">89 &euro;</div>
+        <div class="tag t1">BR</div>
+        <div class="info"><b>Seamless Comfort Bra</b><span>Bra</span></div>
+        <span class="status ok">Delivered</span>
+        <div class="amount">35 &euro;</div>
       </div>
       <div class="row">
-        <div class="tag t2">NU</div>
-        <div class="info"><b>Nuisette satin Velours</b><span>Nuisette</span></div>
-        <span class="status pending">Retour en cours</span>
-        <div class="amount">65 &euro;</div>
+        <div class="tag t2">PA</div>
+        <div class="info"><b>Cotton Brief Set (5-pack)</b><span>Panties</span></div>
+        <span class="status pending">Return in progress</span>
+        <div class="amount">25 &euro;</div>
       </div>
       <div class="row">
-        <div class="tag t3">BD</div>
-        <div class="info"><b>Body dentelle Aurore</b><span>Body</span></div>
-        <span class="status pending">Échange en cours</span>
-        <div class="amount">72 &euro;</div>
+        <div class="tag t3">NI</div>
+        <div class="info"><b>Satin Slip Dress</b><span>Nightwear</span></div>
+        <span class="status pending">Exchange in progress</span>
+        <div class="amount">45 &euro;</div>
       </div>
     </div>
 
     <div class="card">
-      <h2>Programme fidélité</h2>
-      <div class="achieve"><b>340</b> <span>/ 500 points</span></div>
-      <div class="progress"><i style="width:68%"></i></div>
-      <span style="font-size:13px;color:var(--muted)">68 % vers votre prochaine réduction</span>
+      <h2>Loyalty Program</h2>
+      <div class="achieve"><b>420</b> <span>/ 500 points</span></div>
+      <div class="progress"><i style="width:84%"></i></div>
+      <span style="font-size:13px;color:var(--muted)">84% towards your next reward</span>
     </div>
     </div>
 
     <div class="promo">
-      <h3>Découvrez la nouvelle collection</h3>
-      <p>Dentelle, satin et broderies : les pièces exclusives de la saison.</p>
-      <img src="https://play-lh.googleusercontent.com/IIp14R7IhBKj3k1kBXQGmgY0v4dZcF1_3qkVgsSGfMWOuTuVqPdVajO95GYz-XgZhRANHoSU-SVUBgvdA7L4" alt="Nouvelle collection">
+      <h3>Discover the New Collection</h3>
+      <p>Comfort essentials for every day.</p>
+      <img src="https://www.retaildetail.be/wp-content/uploads/2022/04/shutterstock_1364477855_0.jpg" alt="New collection">
     </div>
   </div>
 
   <!-- ============ BANDEAU 5/10 : IMAGE (titre + visuel pleine largeur) ============ -->
-  <h2 class="section-title spaced">Retrouvez nos dernières <span class="name">nouveautés</span></h2>
-  <img class="demo-img" src="https://cdn.moovijob.com/7223480/conversions/Cover_NS-thumb-banner.jpg" alt="Illustration démonstration">
+  <h2 class="section-title spaced">Discover our latest <span class="name">arrivals</span></h2>
+  <img class="demo-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNmziXn9qiwWInmSDKi1Db-od1w4QHeBjdOzw94949RrT9yT_TXKQKeAYC&s=10" alt="Illustration démonstration">
 
   <!-- ============ BANDEAU 6/10 : BLOCS N°2 (titre + 4 tuiles de services) ============ -->
-  <h2 class="section-title spaced">Nos <span class="name">services</span></h2>
+  <h2 class="section-title spaced">Our <span class="name">services</span></h2>
   <div class="nav-grid">
-    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/117/117641.png" alt=""><span>Mes commandes</span></a>
-    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/17/17004.png" alt=""><span>Mon profil</span></a>
-    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/26/26589.png" alt=""><span>Suivi de mes retours</span></a>
-    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/10042/10042848.png" alt=""><span>Aide</span></a>
+    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/117/117641.png" alt=""><span>My Orders</span></a>
+    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/17/17004.png" alt=""><span>My Profile</span></a>
+    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/256/26/26589.png" alt=""><span>Track My Order</span></a>
+    <a class="nav-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/10042/10042848.png" alt=""><span>Help</span></a>
   </div>
 
   <!-- Bandeau d'assistance pleine largeur, texte centré -->
   <!-- ============ BANDEAU 7/10 : TEXTE DESCRIPTIF (paragraphe gris pleine largeur) ============ -->
   <div class="support-banner">
-    <p>Un souci de taille, une pièce qui ne correspond pas à vos attentes ou une question sur l'entretien de vos dessous ? Notre équipe met tout en œuvre pour que votre expérience Glamuse reste impeccable, du choix de la taille jusqu'à la réception de votre commande. Avant de nous contacter, pensez à consulter notre <strong>guide des tailles</strong> ci-dessous : il répond à la majorité des questions sur les coupes et les matières. Vous souhaitez retourner ou échanger un article ? Vous disposez de 30 jours à compter de la réception de votre colis, à condition que les étiquettes soient toujours en place. Votre problème persiste ? Cliquez sur «&nbsp;Nous contacter&nbsp;» pour joindre notre service client. Pensez à indiquer votre numéro de commande et, si besoin, une photo de l'article concerné pour accélérer le traitement. Nos conseillères traitent vos demandes du lundi au samedi, généralement sous 24 à 48 heures. Pour connaître l'état de votre livraison en temps réel, rendez-vous dans la rubrique «&nbsp;Suivi de ma commande&nbsp;».</p>
+    <p>Not the right fit, a style that doesn't suit you, or a question about caring for your lingerie? Our team is here to make sure your Hunkemöller experience stays effortless, from choosing your size to receiving your order. Before reaching out, take a look at our <strong>Bra Fit Guide</strong> below — it answers most questions about cup sizes, band fit and fabrics. Want to return or exchange an item? You have 30 days from delivery to do so, free of charge, as long as the original tags are still attached. Still need help? Click on &laquo;&nbsp;Contact Us&nbsp;&raquo; to reach our customer care team. Please have your order number ready, and a photo of the item if relevant, to help us process your request faster. Our advisors handle requests Monday to Saturday, usually within 24 to 48 hours. To check your delivery status in real time, head to the &laquo;&nbsp;Track My Order&nbsp;&raquo; section.</p>
   </div>
 
   <!-- ============ BANDEAU 8/10 : BLOCS N°3 (titre + 4 + 3 tuiles d'assistance) ============ -->
-  <h2 class="section-title">Si vous avez besoin d'<span class="name">aide</span></h2>
+  <h2 class="section-title">Need <span class="name">help</span>?</h2>
   <!-- Rubriques : rangée de 4 -->
   <div class="help-grid">
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/4659/4659011.png" alt=""><span>Guide des tailles</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt=""><span>Entretien &amp; lavage</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/3092/3092920.png" alt=""><span>Garantie qualité</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/75/75668.png" alt=""><span>Problème produit</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/4659/4659011.png" alt=""><span>Bra Fit Guide</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt=""><span>Care &amp; Washing</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/3092/3092920.png" alt=""><span>Quality Guarantee</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/75/75668.png" alt=""><span>Product Issue</span></a>
   </div>
   <!-- Rubriques : rangée de 3 élargie -->
   <div class="help-grid help-grid-3">
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/545/545676.png" alt=""><span>Suivi de ma commande</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/1034/1034153.png" alt=""><span>Nous contacter</span></a>
-    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/348/348488.png" alt=""><span>Autres rubriques d'assistance</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/545/545676.png" alt=""><span>Track My Order</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/1034/1034153.png" alt=""><span>Contact Us</span></a>
+    <a class="help-tile" href="#"><img src="https://cdn-icons-png.flaticon.com/512/348/348488.png" alt=""><span>More Help Topics</span></a>
   </div>
 </main>
 
 <!-- ============ BANDEAU 9/10 : FOOTER 1 (logo client + pays / langue) ============ -->
 <div class="locale-bar">
-  <select aria-label="Langue">
+  <select aria-label="Country">
     <option selected>France</option>
   </select>
 </div>
@@ -212,16 +212,15 @@
 <!-- ============ BANDEAU 10/10 : FOOTER 2 (menu legal + copyright Diabolocom) ============ -->
 <footer class="site">
   <div class="inner">
-    <a href="#">Guide des tailles</a>
-    <a href="#">Retours &amp; échanges</a>
-    <a href="#">Informations sur la marque</a>
-    <a href="#">Politique de confidentialité du site web</a>
-    <a href="#">Mentions légales</a>
+    <a href="#">Bra Fit Guide</a>
+    <a href="#">Returns &amp; Exchanges</a>
+    <a href="#">About the Brand</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Legal Notice</a>
     <a href="#">Contact</a>
     <span class="copy">&copy; Diabolocom, 2026</span>
   </div>
 </footer>
 <!-- ============ SNIPPET CHATBOT — coller ici le script de demo, ne rien mettre apres ============ -->
-<script src="https://fr2.chat.diabolocom.com/01a05879-3f0f-74e0-a6d3-55fab0c489a3/config.js"></script>
 </body>
 </html>
