@@ -177,9 +177,13 @@
   function getRawParam() {
     const search = window.location.search;
     if (search.length > 1) {
-      // essaie de décoder proprement, sinon prend la chaîne brute
-      try { return decodeURIComponent(search.substring(1)); }
-      catch (e) { return search.substring(1); }
+      const raw = search.substring(1);
+      // Échappe tout "%" qui n'est pas suivi de 2 chiffres hexadécimaux valides,
+      // pour ne pas faire échouer le décodage à cause d'un "%" littéral dans le
+      // texte (ex: "33 %", "1,75 %") qui n'est pas une séquence d'échappement.
+      const sanitized = raw.replace(/%(?![0-9A-Fa-f]{2})/g, "%25");
+      try { return decodeURIComponent(sanitized); }
+      catch (e) { return raw; }
     }
     return "";
   }
@@ -234,6 +238,10 @@
 
       const textSpan = document.createElement("span");
       textSpan.textContent = msg.text;
+
+      const meta = document.createElement("span");
+      meta.className = "meta";
+      meta.innerHTML = randomTime(9, i) + (isOut ? " " + checkSvg : "");
 
       bubble.appendChild(textSpan);
       row.appendChild(bubble);
