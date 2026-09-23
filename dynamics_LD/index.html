@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+<style>
+  :root { --s: 0.67; }              /* 0.67 = plus dézoomé, 0.8 = plus lisible */
+  html, body { margin:0; height:100%; overflow:hidden; }
+  iframe {
+    width:  calc(100vw / var(--s));
+    height: calc(100vh / var(--s));
+    transform: scale(var(--s));
+    transform-origin: 0 0;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+  <iframe src="https://org64f41.crm12.dynamics.com/main.aspx?appid=588314b3-882c-eb11-bf68-000d3a898b6e&cmdbar=false&navbar=on&pagetype=entityrecord&etn=contact&id=dde0a0e6-361d-f111-8342-000d3ae7a778"></iframe>
+</body>
+</html>
