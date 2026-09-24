@@ -254,11 +254,6 @@
   const raw = getRawParam();
   const messages = parseConversation(raw);
   render(messages);
-
-  // ajuste le nom du contact affiché dans l'en-tête si un BOT est présent
-  if (messages.some(m => m.role === "BOT")) {
-    document.getElementById("contactName").textContent = "Assistant";
-  }
 })();
 </script>
 </body>
