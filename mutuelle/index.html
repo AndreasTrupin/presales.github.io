@@ -12,22 +12,22 @@
      ===================================================================== */
   :root{
     --bg:#ffffff; --card:#f5f4f0; --card2:#e4e2db; --line:#e0ddd4;
-    --banner:#eeece6; --footer:#ffffff;
-    --txt:#1a1f26; --muted:#5a6672; --accent:#ff7b00;
+    --banner:#eeece6; --footer:#006a53;
+    --txt:#1a1f26; --muted:#5a6672; --accent:#006a53; --underline:#ff7b00;
     --tag1:#006a53; --tag2:#2b7de9; --tag3:#8b5cc9;
     --ok:#2ea043; --pending:#d29922; --ok-txt:#1e7a34; --pending-txt:#9a6400;
-    --footer-txt:#006a53; --footer-muted:#5a6672; --footer-line:#e2e6ea;
+    --footer-txt:#ffffff; --header-bg:#006a53; --header-txt:#ffffff; --header-muted:rgba(255,255,255,.85); --header-line:rgba(255,255,255,.25); --footer-muted:#d5e8e2; --footer-line:#00594a;
   }
   *{box-sizing:border-box}
   body{margin:0;overflow-x:hidden;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1a1f26}
-  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--footer-line);background:var(--footer)}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--footer-txt)}
-  .logo{height:38px;max-width:150px;object-fit:contain}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px;border-bottom:1px solid var(--header-line);background:var(--header-bg);-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);position:sticky;top:0;z-index:50}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--header-txt)}
+  .logo{height:38px;max-width:150px;object-fit:contain;filter:brightness(0) invert(1)}
   nav{display:flex;flex-wrap:wrap;justify-content:center}
-  nav a{color:var(--footer-muted);text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
-  nav a:hover{color:var(--footer-txt)}
-  nav a.active{font-weight:700;color:var(--footer-txt);border-bottom:2px solid var(--accent)}
-  .user{display:flex;align-items:center;gap:10px;color:var(--footer-txt)}
+  nav a{color:var(--header-muted);text-decoration:none;margin:0 10px;font-size:14px;padding-bottom:2px}
+  nav a:hover{color:var(--header-txt)}
+  nav a.active{font-weight:700;color:var(--header-txt);border-bottom:2px solid var(--underline)}
+  .user{display:flex;align-items:center;gap:10px;color:var(--header-txt)}
   .avatar{width:34px;height:34px;border-radius:50%;background:#eef1f5;color:#1a1f26;border:1px solid #dce1e7;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
   main{max-width:1040px;margin:0 auto;padding:28px 24px}
   h1{font-size:26px;margin:0 0 4px}
@@ -113,7 +113,7 @@
 <body>
 <!-- ============ BANDEAU 1/10 : HEADER (logo + nom client, menu, utilisateur) ============ -->
 <header>
-  <div class="brand"><img class="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYF2XFYpcGJySHhrShymC_9AnXa0-hd_0HWggHgNzXbQ&s=10" alt="Groupama"></div>
+  <div class="brand"><img class="logo" src="https://cdn.prod.website-files.com/5fd23f146bb2e401d6a24a4c/6a03482474981c54c288b47e_GROUPAMA_VER_VERT_RVB.png" alt="Groupama"></div>
   <nav>
     <a href="#" class="active">Mes contrats</a><a href="#">Sinistres</a><a href="#">Santé</a><a href="#">Mes documents</a><a href="#">Aide</a>
   </nav>
